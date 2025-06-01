@@ -1,22 +1,4 @@
-/**
- * This entry file is for webpack plugin.
- * @module
- */
+import { createWebpackPlugin } from 'unplugin'
+import { unpluginFactory } from '.'
 
-import { Starter } from './index'
-
-/**
- * Your webpack plugin
- * @example
- * ```js
- * // webpack.config.js
- * import Starter from 'unplugin-apple-photos/webpack'
- *
- * default export {
- *  plugins: [Starter()],
- * }
- * ```
- */
-const { webpack } = Starter
-export default webpack
-export { webpack as 'module.exports' }
+export default createWebpackPlugin(unpluginFactory)

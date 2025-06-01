@@ -1,20 +1,4 @@
-/**
- * This entry file is for esbuild plugin.
- * @module
- */
+import { createEsbuildPlugin } from 'unplugin'
+import { unpluginFactory } from '.'
 
-import { Starter } from './index'
-
-/**
- * Example esbuild plugin
- * @example
- * ```ts
- * import { build } from 'esbuild'
- * import Starter from 'unplugin-apple-photos/esbuild'
- * 
- * build({ plugins: [Starter()] })
-```
- */
-const { esbuild } = Starter
-export default esbuild
-export { esbuild as 'module.exports' }
+export default createEsbuildPlugin(unpluginFactory)

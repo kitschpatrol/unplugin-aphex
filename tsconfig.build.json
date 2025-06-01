@@ -3,22 +3,14 @@
 
 	// From template...
 	"compilerOptions": {
-		"target": "esnext",
-		"lib": ["es2022"],
-		"moduleDetection": "force",
-		"module": "preserve",
-		"moduleResolution": "bundler",
+		"target": "es2017",
+		"lib": ["esnext", "DOM"],
+		"module": "esnext",
+		"moduleResolution": "node",
 		"resolveJsonModule": true,
-		"types": ["node"],
-		"allowJs": false,
 		"strict": true,
-		"noUnusedLocals": true,
-		"declaration": true,
-		"esModuleInterop": true,
-		"isolatedDeclarations": true,
-		"isolatedModules": true,
-		"verbatimModuleSyntax": true,
-		"skipLibCheck": true
+		"strictNullChecks": true,
+		"esModuleInterop": true
 	},
 
 	"include": ["src"],

@@ -1,22 +1,4 @@
-/**
- * This entry file is for Rollup plugin.
- * @module
- */
+import { createRollupPlugin } from 'unplugin'
+import { unpluginFactory } from '.'
 
-import { Starter } from './index'
-
-/**
- * Rollup plugin
- * @example
- * ```ts
- * // rollup.config.js
- * import Starter from 'unplugin-apple-photos/rollup'
- *
- * export default {
- *   plugins: [Starter()],
- * }
- * ```
- */
-const { rollup } = Starter
-export default rollup
-export { rollup as 'module.exports' }
+export default createRollupPlugin(unpluginFactory)

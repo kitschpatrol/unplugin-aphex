@@ -1,22 +1,4 @@
-/**
- * This entry file is for Rolldown plugin.
- * @module
- */
+import { createRolldownPlugin } from 'unplugin'
+import { unpluginFactory } from '.'
 
-import { Starter } from './index'
-
-/**
- * Rolldown plugin
- * @example
- * ```ts
- * // rolldown.config.js
- * import Starter from 'unplugin-apple-photos/rolldown'
- *
- * export default {
- *   plugins: [Starter()],
- * }
- * ```
- */
-const { rolldown } = Starter
-export default rolldown
-export { rolldown as 'module.exports' }
+export default createRolldownPlugin(unpluginFactory)

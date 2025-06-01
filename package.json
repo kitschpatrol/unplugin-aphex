@@ -3,6 +3,8 @@
 	"version": "0.0.0",
 	"description": "Description.",
 	"keywords": [
+		"photos",
+		"apple-photos",
 		"unplugin",
 		"vite",
 		"webpack",
@@ -10,7 +12,8 @@
 		"rollup",
 		"rolldown",
 		"esbuild",
-		"farm"
+		"farm",
+		"transform"
 	],
 	"homepage": "https://github.com/kitschpatrol/unplugin-apple-photos",
 	"bugs": "https://github.com/kitschpatrol/unplugin-apple-photos/issues",
@@ -29,11 +32,15 @@
 		".": "./dist/index.js",
 		"./*": "./*",
 		"./api": "./dist/api.js",
+		"./astro": "./dist/astro.js",
 		"./esbuild": "./dist/esbuild.js",
 		"./farm": "./dist/farm.js",
+		"./nuxt": "./dist/nuxt.js",
+		"./package.json": "./package.json",
 		"./rolldown": "./dist/rolldown.js",
 		"./rollup": "./dist/rollup.js",
 		"./rspack": "./dist/rspack.js",
+		"./types": "./dist/types.js",
 		"./vite": "./dist/vite.js",
 		"./webpack": "./dist/webpack.js"
 	},
@@ -52,28 +59,64 @@
 		"dist"
 	],
 	"scripts": {
-		"build": "tsdown --tsconfig tsconfig.build.json",
+		"build": "tsdown",
 		"clean": "git rm -f pnpm-lock.yaml ; git clean -fdX",
-		"dev": "tsdown --tsconfig tsconfig.build.json --watch",
+		"dev": "tsdown --watch",
 		"fix": "kpi fix",
 		"lint": "kpi lint",
+		"play": "npm -C playground run dev",
 		"release": "bumpp --commit 'Release: %s' && pnpm run build && pnpm publish --otp $(op read 'op://Personal/Npmjs/one-time password?attribute=otp')",
 		"test": "vitest"
 	},
 	"dependencies": {
-		"unplugin": "^2.3.5",
-		"unplugin-utils": "^0.2.4"
+		"unplugin": "^2.3.5"
 	},
 	"devDependencies": {
 		"@kitschpatrol/shared-config": "^5.4.2",
-		"@sxzz/test-utils": "^0.5.6",
-		"@types/node": "^22.15.21",
+		"@nuxt/kit": "^3.17.4",
+		"@nuxt/schema": "^3.17.4",
+		"@types/node": "^22.15.29",
 		"bumpp": "^10.1.1",
-		"tsdown": "^0.12.3",
+		"nodemon": "^3.1.10",
+		"rollup": "^4.41.1",
+		"tsdown": "^0.12.6",
 		"tsx": "^4.19.4",
 		"typescript": "^5.8.3",
 		"vite": "^6.3.5",
-		"vitest": "^3.1.4"
+		"vitest": "^3.1.4",
+		"webpack": "^5.99.9"
+	},
+	"peerDependencies": {
+		"@farmfe/core": ">=1",
+		"@nuxt/kit": "^3",
+		"@nuxt/schema": "^3",
+		"esbuild": "*",
+		"rollup": "^3",
+		"vite": ">=3",
+		"webpack": "^4 || ^5"
+	},
+	"peerDependenciesMeta": {
+		"@farmfe/core": {
+			"optional": true
+		},
+		"@nuxt/kit": {
+			"optional": true
+		},
+		"@nuxt/schema": {
+			"optional": true
+		},
+		"esbuild": {
+			"optional": true
+		},
+		"rollup": {
+			"optional": true
+		},
+		"vite": {
+			"optional": true
+		},
+		"webpack": {
+			"optional": true
+		}
 	},
 	"packageManager": "pnpm@10.11.0",
 	"engines": {

@@ -7,4 +7,5 @@ export default defineConfig({
 	entry: ['./src/*.ts'],
 	format: 'esm',
 	target: 'node18.12',
+	tsconfig: './tsconfig.build.json',
 })

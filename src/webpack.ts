@@ -1,14 +1,12 @@
 /**
  * This entry file is for webpack plugin.
- *
  * @module
  */
 
 import { Starter } from './index'
 
 /**
- * Webpack plugin
- *
+ * Your webpack plugin
  * @example
  * ```js
  * // webpack.config.js
@@ -19,6 +17,6 @@ import { Starter } from './index'
  * }
  * ```
  */
-const webpack = Starter.webpack as typeof Starter.webpack
+const { webpack } = Starter
 export default webpack
 export { webpack as 'module.exports' }

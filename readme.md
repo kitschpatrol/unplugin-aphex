@@ -33,7 +33,7 @@ npm i -D unplugin-apple-photos
 <summary>Vite</summary><br>
 
 ```ts
-// vite.config.ts
+// Vite.config.ts
 import Starter from 'unplugin-apple-photos/vite'
 
 export default defineConfig({
@@ -47,7 +47,7 @@ export default defineConfig({
 <summary>Rollup</summary><br>
 
 ```ts
-// rollup.config.js
+// Rollup.config.js
 import Starter from 'unplugin-apple-photos/rollup'
 
 export default {
@@ -61,7 +61,7 @@ export default {
 <summary>Rolldown</summary><br>
 
 ```ts
-// rolldown.config.js
+// Rolldown.config.js
 import Starter from 'unplugin-apple-photos/rolldown'
 
 export default {
@@ -86,10 +86,10 @@ build({
 <br></details>
 
 <details>
-<summary>Webpack</summary><br>
+<summary>webpack</summary><br>
 
 ```js
-// webpack.config.js
+// Your webpack.config.js
 import Starter from 'unplugin-apple-photos/webpack'
 
 export default {
@@ -104,7 +104,7 @@ export default {
 <summary>Rspack</summary><br>
 
 ```ts
-// rspack.config.js
+// Rspack.config.js
 import Starter from 'unplugin-apple-photos/rspack'
 
 export default {

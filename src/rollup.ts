@@ -1,6 +1,5 @@
 /**
  * This entry file is for Rollup plugin.
- *
  * @module
  */
 
@@ -8,7 +7,6 @@ import { Starter } from './index'
 
 /**
  * Rollup plugin
- *
  * @example
  * ```ts
  * // rollup.config.js
@@ -19,6 +17,6 @@ import { Starter } from './index'
  * }
  * ```
  */
-const rollup = Starter.rollup as typeof Starter.rollup
+const { rollup } = Starter
 export default rollup
 export { rollup as 'module.exports' }

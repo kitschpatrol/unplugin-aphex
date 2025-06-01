@@ -1,5 +1,26 @@
 {
 	"extends": "./tsconfig.json",
-	"include": ["**/*"],
+
+	// From template...
+	"compilerOptions": {
+		"target": "esnext",
+		"lib": ["es2022"],
+		"moduleDetection": "force",
+		"module": "preserve",
+		"moduleResolution": "bundler",
+		"resolveJsonModule": true,
+		"types": ["node"],
+		"allowJs": false,
+		"strict": true,
+		"noUnusedLocals": true,
+		"declaration": true,
+		"esModuleInterop": true,
+		"isolatedDeclarations": true,
+		"isolatedModules": true,
+		"verbatimModuleSyntax": true,
+		"skipLibCheck": true
+	},
+
+	"include": ["src"],
 	"exclude": ["**/dist/", "**/bin/"]
 }

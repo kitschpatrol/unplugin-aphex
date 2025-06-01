@@ -1,14 +1,12 @@
 /**
  * This entry file is for esbuild plugin.
- *
  * @module
  */
 
 import { Starter } from './index'
 
 /**
- * Esbuild plugin
- *
+ * Example esbuild plugin
  * @example
  * ```ts
  * import { build } from 'esbuild'
@@ -17,6 +15,6 @@ import { Starter } from './index'
  * build({ plugins: [Starter()] })
 ```
  */
-const esbuild = Starter.esbuild as typeof Starter.esbuild
+const { esbuild } = Starter
 export default esbuild
 export { esbuild as 'module.exports' }

@@ -1,9 +1,12 @@
 import { eslintConfig } from '@kitschpatrol/eslint-config'
 
 export default eslintConfig({
-	// Enable as needed:
-	// astro: true,
-	// react: true,
-	// svelte: true,
-	// type: 'lib',
+	ts: {
+		overrides: {
+			'jsdoc/require-description': 'off',
+			'jsdoc/require-jsdoc': 'off',
+			'new-cap': 'off',
+		},
+	},
+	type: 'lib',
 })

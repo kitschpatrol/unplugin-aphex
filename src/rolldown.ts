@@ -1,6 +1,5 @@
 /**
  * This entry file is for Rolldown plugin.
- *
  * @module
  */
 
@@ -8,7 +7,6 @@ import { Starter } from './index'
 
 /**
  * Rolldown plugin
- *
  * @example
  * ```ts
  * // rolldown.config.js
@@ -19,6 +17,6 @@ import { Starter } from './index'
  * }
  * ```
  */
-const rolldown = Starter.rolldown as typeof Starter.rolldown
+const { rolldown } = Starter
 export default rolldown
 export { rolldown as 'module.exports' }

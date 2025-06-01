@@ -1,6 +1,5 @@
 /**
  * This entry file is for Farm plugin.
- *
  * @module
  */
 
@@ -8,7 +7,6 @@ import { Starter } from './index'
 
 /**
  * Farm plugin
- *
  * @example
  * ```ts
  * // farm.config.js
@@ -19,6 +17,6 @@ import { Starter } from './index'
  * }
  * ```
  */
-const farm = Starter.farm as typeof Starter.farm
+const { farm } = Starter
 export default farm
 export { farm as 'module.exports' }

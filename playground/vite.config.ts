@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 import Inspect from 'vite-plugin-inspect'
-import ApplePhotos from '../src/vite'
+import Aphex from '../src/vite'
 
 export default defineConfig({
-	plugins: [Inspect(), ApplePhotos()],
+	plugins: [Inspect(), Aphex()],
 })

@@ -10,7 +10,7 @@ export default defineNuxtModule<ModuleOptions>({
 		// ...default options
 	},
 	meta: {
-		configKey: 'unpluginApplePhotos',
+		configKey: 'unpluginAphex',
 		name: 'nuxt-unplugin-aphex',
 	},
 	setup(options, _nuxt) {

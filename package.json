@@ -1,9 +1,10 @@
 {
-	"name": "unplugin-apple-photos",
+	"name": "unplugin-aphex",
 	"version": "0.0.0",
-	"description": "Description.",
+	"description": "Unplugin for module-style image imports from your macOS Photos.app library.",
 	"keywords": [
 		"photos",
+		"aphex",
 		"apple-photos",
 		"unplugin",
 		"vite",
@@ -15,11 +16,11 @@
 		"farm",
 		"transform"
 	],
-	"homepage": "https://github.com/kitschpatrol/unplugin-apple-photos",
-	"bugs": "https://github.com/kitschpatrol/unplugin-apple-photos/issues",
+	"homepage": "https://github.com/kitschpatrol/unplugin-aphex",
+	"bugs": "https://github.com/kitschpatrol/unplugin-aphex/issues",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/kitschpatrol/unplugin-apple-photos.git"
+		"url": "git+https://github.com/kitschpatrol/unplugin-aphex.git"
 	},
 	"license": "MIT",
 	"author": {
@@ -62,29 +63,31 @@
 		"build": "tsdown",
 		"clean": "git rm -f pnpm-lock.yaml ; git clean -fdX",
 		"dev": "tsdown --watch",
-		"fix": "kpi fix",
-		"lint": "kpi lint",
+		"fix": "ksc fix",
+		"lint": "ksc lint",
 		"play": "npm -C playground run dev",
 		"release": "bumpp --commit 'Release: %s' && pnpm run build && pnpm publish --otp $(op read 'op://Personal/Npmjs/one-time password?attribute=otp')",
 		"test": "vitest"
 	},
 	"dependencies": {
-		"unplugin": "^2.3.5"
+		"aphex": "../aphex",
+		"unplugin": "^2.3.10"
 	},
 	"devDependencies": {
-		"@kitschpatrol/shared-config": "^5.4.2",
-		"@nuxt/kit": "^3.17.4",
-		"@nuxt/schema": "^3.17.4",
-		"@types/node": "^22.15.29",
-		"bumpp": "^10.1.1",
+		"@kitschpatrol/shared-config": "^5.7.0",
+		"@nuxt/kit": "^4.1.2",
+		"@nuxt/schema": "^4.1.2",
+		"@types/node": "^20.19.17",
+		"bumpp": "^10.2.3",
+		"defu": "^6.1.4",
 		"nodemon": "^3.1.10",
-		"rollup": "^4.41.1",
-		"tsdown": "^0.12.6",
-		"tsx": "^4.19.4",
-		"typescript": "^5.8.3",
-		"vite": "^6.3.5",
-		"vitest": "^3.1.4",
-		"webpack": "^5.99.9"
+		"rollup": "^4.50.2",
+		"tsdown": "^0.15.2",
+		"tsx": "^4.20.5",
+		"typescript": "~5.9.2",
+		"vite": "^7.1.6",
+		"vitest": "^3.2.4",
+		"webpack": "^5.101.3"
 	},
 	"peerDependencies": {
 		"@farmfe/core": ">=1",
@@ -118,10 +121,16 @@
 			"optional": true
 		}
 	},
-	"packageManager": "pnpm@10.11.0",
+	"packageManager": "pnpm@10.17.0",
 	"engines": {
-		"node": ">=18.12.0"
+		"node": ">=20.19.0"
 	},
+	"os": [
+		"darwin"
+	],
+	"cpu": [
+		"arm64"
+	],
 	"publishConfig": {
 		"access": "public"
 	}

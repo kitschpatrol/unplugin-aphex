@@ -1,32 +1,23 @@
-# unplugin-apple-photos [![npm](https://img.shields.io/npm/v/unplugin-apple-photos.svg)](https://npmjs.com/package/unplugin-apple-photos)
+<!-- title -->
 
-[![Unit Test](https://github.com/sxzz/unplugin-apple-photos/actions/workflows/unit-test.yml/badge.svg)](https://github.com/sxzz/unplugin-apple-photos/actions/workflows/unit-test.yml)
+<!-- banner -->
 
-Starter template for [unplugin](https://github.com/unjs/unplugin).
+<!-- badges -->
 
-<!-- Remove Start -->
+<!-- short-description -->
 
-## Template Usage
+<!-- table-of-contents -->
 
-To use this template, clone it down using:
+## Overview
 
-```bash
-npx degit sxzz/unplugin-apple-photos unplugin-my-plugin
-```
+## Getting started
 
-And do a global replacement of `unplugin-apple-photos` with your plugin name.
+### Dependencies
 
-Then you can start developing your unplugin 🔥
-
-To run unit tests, run: `pnpm run test`.
-To release a new version, run: `pnpm run release`.
-
-<!-- Remove End -->
-
-## Installation
+### Installation
 
 ```bash
-npm i -D unplugin-apple-photos
+npm i -D unplugin-aphex
 ```
 
 <details>
@@ -34,7 +25,7 @@ npm i -D unplugin-apple-photos
 
 ```ts
 // Vite.config.ts
-import Starter from 'unplugin-apple-photos/vite'
+import Starter from 'unplugin-aphex/vite'
 
 export default defineConfig({
   plugins: [Starter()],
@@ -48,7 +39,7 @@ export default defineConfig({
 
 ```ts
 // Rollup.config.js
-import Starter from 'unplugin-apple-photos/rollup'
+import Starter from 'unplugin-aphex/rollup'
 
 export default {
   plugins: [Starter()],
@@ -62,7 +53,7 @@ export default {
 
 ```ts
 // Rolldown.config.js
-import Starter from 'unplugin-apple-photos/rolldown'
+import Starter from 'unplugin-aphex/rolldown'
 
 export default {
   plugins: [Starter()],
@@ -76,7 +67,7 @@ export default {
 
 ```ts
 import { build } from 'esbuild'
-import Starter from 'unplugin-apple-photos/esbuild'
+import Starter from 'unplugin-aphex/esbuild'
 
 build({
   plugins: [Starter()],
@@ -90,7 +81,7 @@ build({
 
 ```js
 // Your webpack.config.js
-import Starter from 'unplugin-apple-photos/webpack'
+import Starter from 'unplugin-aphex/webpack'
 
 export default {
   /* ... */
@@ -105,7 +96,7 @@ export default {
 
 ```ts
 // Rspack.config.js
-import Starter from 'unplugin-apple-photos/rspack'
+import Starter from 'unplugin-aphex/rspack'
 
 export default {
   /* ... */
@@ -115,14 +106,38 @@ export default {
 
 <br></details>
 
-## Sponsors
+## Usage
 
-<p align="center">
-  <a href="https://cdn.jsdelivr.net/gh/sxzz/sponsors/sponsors.svg">
-    <img src='https://cdn.jsdelivr.net/gh/sxzz/sponsors/sponsors.svg'/>
-  </a>
-</p>
+### Library
 
-## License
+#### API
 
-[MIT](./LICENSE) License © 2025-PRESENT [三咲智子](https://github.com/sxzz)
+#### Examples
+
+### CLI
+
+#### Commands
+
+#### Examples
+
+## Background
+
+### Motivation
+
+### Implementation notes
+
+### Similar projects
+
+## The future
+
+## Maintainers
+
+_List maintainer(s) for a repository, along with one way of contacting them (e.g. GitHub link or email)._
+
+## Acknowledgments
+
+_State anyone or anything that significantly helped with the development of your project. State public contact hyper-links if applicable._
+
+<!-- contributing -->
+
+<!-- license -->

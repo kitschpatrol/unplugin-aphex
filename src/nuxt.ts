@@ -11,7 +11,7 @@ export default defineNuxtModule<ModuleOptions>({
 	},
 	meta: {
 		configKey: 'unpluginApplePhotos',
-		name: 'nuxt-unplugin-apple-photos',
+		name: 'nuxt-unplugin-aphex',
 	},
 	setup(options, _nuxt) {
 		addVitePlugin(() => vite(options))

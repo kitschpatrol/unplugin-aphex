@@ -14,5 +14,5 @@ export default (options: Options): any => ({
 			astro.config.vite.plugins.push(unplugin.vite(options))
 		},
 	},
-	name: 'unplugin-apple-photos',
+	name: 'unplugin-aphex',
 })

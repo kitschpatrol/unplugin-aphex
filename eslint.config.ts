@@ -7,6 +7,11 @@ export default eslintConfig(
 				'html/no-inline-styles': 'off',
 			},
 		},
+		js: {
+			overrides: {
+				'new-cap': 'off',
+			},
+		},
 		ts: {
 			overrides: {
 				// TODO decide on a prefix...

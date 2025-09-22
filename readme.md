@@ -42,10 +42,10 @@ npm i -D unplugin-aphex
 
 ```ts
 // Vite.config.ts
-import Starter from 'unplugin-aphex/vite'
+import Aphex from 'unplugin-aphex/vite'
 
 export default defineConfig({
-  plugins: [Starter()],
+  plugins: [Aphex()],
 })
 ```
 
@@ -56,10 +56,10 @@ export default defineConfig({
 
 ```ts
 // Rollup.config.js
-import Starter from 'unplugin-aphex/rollup'
+import Aphex from 'unplugin-aphex/rollup'
 
 export default {
-  plugins: [Starter()],
+  plugins: [Aphex()],
 }
 ```
 
@@ -70,10 +70,10 @@ export default {
 
 ```ts
 // Rolldown.config.js
-import Starter from 'unplugin-aphex/rolldown'
+import Aphex from 'unplugin-aphex/rolldown'
 
 export default {
-  plugins: [Starter()],
+  plugins: [Aphex()],
 }
 ```
 
@@ -84,10 +84,10 @@ export default {
 
 ```ts
 import { build } from 'esbuild'
-import Starter from 'unplugin-aphex/esbuild'
+import Aphex from 'unplugin-aphex/esbuild'
 
 build({
-  plugins: [Starter()],
+  plugins: [Aphex()],
 })
 ```
 
@@ -98,11 +98,11 @@ build({
 
 ```js
 // Your webpack.config.js
-import Starter from 'unplugin-aphex/webpack'
+import Aphex from 'unplugin-aphex/webpack'
 
 export default {
   /* ... */
-  plugins: [Starter()],
+  plugins: [Aphex()],
 }
 ```
 
@@ -113,11 +113,11 @@ export default {
 
 ```ts
 // Rspack.config.js
-import Starter from 'unplugin-aphex/rspack'
+import Aphex from 'unplugin-aphex/rspack'
 
 export default {
   /* ... */
-  plugins: [Starter()],
+  plugins: [Aphex()],
 }
 ```
 

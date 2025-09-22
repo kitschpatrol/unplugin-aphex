@@ -127,6 +127,10 @@ export default {
 
 TK
 
+## Development Notes
+
+`"@types/node": "^22"` are required to avoid type errors. Vite will reject the `Aphex()` plugin type if Node types `^20` are used.
+
 ## Maintainers
 
 [@kitschpatrol](https://github.com/kitschpatrol)

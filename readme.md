@@ -2,13 +2,13 @@
 
 <!-- title -->
 
-# unplugin-aphex
+# @kitschpatrol/unplugin-aphex
 
 <!-- /title -->
 
 <!-- badges -->
 
-[![NPM Package unplugin-aphex](https://img.shields.io/npm/v/unplugin-aphex.svg)](https://npmjs.com/package/unplugin-aphex)
+[![NPM Package @kitschpatrol/unplugin-aphex](https://img.shields.io/npm/v/@kitschpatrol/unplugin-aphex.svg)](https://npmjs.com/package/@kitschpatrol/unplugin-aphex)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 <!-- /badges -->
@@ -21,28 +21,48 @@
 
 ## Overview
 
-TK
+This project wraps the [Aphex](https://github.com/kitschpatrol/aphex) Apple Photos Export library in a unified [unplugin](https://unplugin.unjs.io/) for integration with a range of bundlers and build pipelines. (Vite, Rollup, etc.)
+
+Aphex treats your Apple Photos.app library as a virtual file system, allowing you to import specific images by their album name / path from your JavaScript / TypeScript code via the `~aphex/` module prefix:
+
+```ts
+import photo from '~aphex/some-photos-album/img_1922.jpeg'
+
+console.assert(photo === '/@fs/node_modules/.cache/aphex/img_1922.jpeg')
+```
+
+Running against a cold cache can be _extremely_ slow and can require foreground UI focus, because certain image export strategies have to manipulate the Photos.app GUI directly. (This is for [regrettable but valid reasons](https://github.com/RhetTbull/osxphotos/discussions/1522).)
+
+This readme only covers the basics of using the build plugin, please see the [Aphex project readme](https://github.com/kitschpatrol/aphex) for more details on the underlying functionality and export options.
+
+This project is open-sourced as a curiosity and for my own convenience, but I suspect it's too niche to be of wide interest or utility. I don't currently plan to spend time adding features for more general use-cases. (E.g. iCloud Photos, CI builds...)
 
 ## Getting started
 
-TK
-
 ### Dependencies
 
-TK
+Requires macOS with Photos.app installed and [Node 20.19.0](https://nodejs.org/en/download/) or newer. Currently, only an `arm64` (Apple Silicon) build of the requisite native binary is provided by the bundled Aphex library.
+
+Full image processing functionality also requires a number of image-related dependencies available via [Homebrew](https://brew.sh). (Enumerated below.)
 
 ### Installation
 
+#### 1. Install the plugin package
+
 ```bash
-npm i -D unplugin-aphex
+brew install libavif mozjpeg imagemagick webp dssim ffmpeg guetzli oxipng
+
+npm i -D @kitschpatrol/unplugin-aphex
 ```
 
-<details>
+#### 2. Add the plugin to your bundler's configuration file
+
+<details open>
 <summary>Vite</summary><br>
 
 ```ts
 // Vite.config.ts
-import Aphex from 'unplugin-aphex/vite'
+import Aphex from '@kitschpatrol/unplugin-aphex/vite'
 
 export default defineConfig({
   plugins: [Aphex()],
@@ -56,7 +76,7 @@ export default defineConfig({
 
 ```ts
 // Rollup.config.js
-import Aphex from 'unplugin-aphex/rollup'
+import Aphex from '@kitschpatrol/unplugin-aphex/rollup'
 
 export default {
   plugins: [Aphex()],
@@ -70,7 +90,7 @@ export default {
 
 ```ts
 // Rolldown.config.js
-import Aphex from 'unplugin-aphex/rolldown'
+import Aphex from '@kitschpatrol/unplugin-aphex/rolldown'
 
 export default {
   plugins: [Aphex()],
@@ -83,8 +103,8 @@ export default {
 <summary>esbuild</summary><br>
 
 ```ts
+import Aphex from '@kitschpatrol/unplugin-aphex/esbuild'
 import { build } from 'esbuild'
-import Aphex from 'unplugin-aphex/esbuild'
 
 build({
   plugins: [Aphex()],
@@ -98,7 +118,7 @@ build({
 
 ```js
 // Your webpack.config.js
-import Aphex from 'unplugin-aphex/webpack'
+import Aphex from '@kitschpatrol/unplugin-aphex/webpack'
 
 export default {
   /* ... */
@@ -113,7 +133,7 @@ export default {
 
 ```ts
 // Rspack.config.js
-import Aphex from 'unplugin-aphex/rspack'
+import Aphex from '@kitschpatrol/unplugin-aphex/rspack'
 
 export default {
   /* ... */
@@ -123,13 +143,41 @@ export default {
 
 <br></details>
 
+### 3. Configure TypeScript
+
+_Skip this step if you're using plain JavaScript._
+
+Add the extension declarations to your [types](https://www.typescriptlang.org/tsconfig#types) in tsconfig.json:
+
+```json
+{
+  "compilerOptions": {
+    "types": ["@kitschpatrol/unplugin-aphex/ext"]
+  }
+}
+```
+
+Alternately, you can add a triple-slash package dependency directive to your global types file (e.g. `env.d.ts` or similar):
+
+```ts
+/// <reference types="@kitschpatrol/unplugin-aphex/ext" />
+```
+
+This step should take care of errors like:
+
+```sh
+Cannot find module '~./test/assets/test-sketch.tldr' or its corresponding type declarations.ts(2307)
+```
+
 ## Usage
 
-TK
+Any module imports prefixed with `~photos/` or `~aphex/` will be exported from Photos.app, processed, and cached to a project-local directory. The string path to the exported image is returned from the import statement.
+
+For now, the (many) plugin option arguments are documented via inline JSDoc comments.
 
 ## Development Notes
 
-`"@types/node": "^22"` are required to avoid type errors. Vite will reject the `Aphex()` plugin type if Node types `^20` are used.
+The package itself requires `@types/node` version 22. Using version 20 to match the supported `engines` will result in type errors from Unplugin when instantiating an `Aphex()` plugin.
 
 ## Maintainers
 

@@ -42,4 +42,11 @@ export default eslintConfig(
 			'unicorn/prevent-abbreviations': 'off',
 		},
 	},
+	{
+		files: ['readme.md/*.ts'],
+		rules: {
+			// 'import/no-unresolved': 'off',
+			'ts/triple-slash-reference': 'off',
+		},
+	},
 )

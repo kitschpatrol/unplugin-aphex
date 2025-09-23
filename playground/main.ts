@@ -5,6 +5,7 @@ import anotherPhotoPath from '~aphex/test-album/prototype'
 // import photoPathProtocol from 'photos://52B90B1B-731F-44CE-B46E-ABBC752FF3DB'
 
 console.log(photoPath)
+console.assert(photoPath === '/@fs/node_modules/.cache/aphex/lab-5.png')
 
 const img = document.createElement('img')
 img.src = photoPath

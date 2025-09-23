@@ -11,7 +11,7 @@ importers:
       '@farmfe/core':
         specifier: '>=1'
         version: 1.7.11(@types/node@22.18.6)
-      aphex:
+      '@kitschpatrol/aphex':
         specifier: ../aphex
         version: link:../aphex
       esbuild:
@@ -36,6 +36,9 @@ importers:
       bumpp:
         specifier: ^10.2.3
         version: 10.2.3
+      deepmerge-ts:
+        specifier: ^7.1.5
+        version: 7.1.5
       defu:
         specifier: ^6.1.4
         version: 6.1.4
@@ -62,7 +65,7 @@ importers:
         version: 3.2.4(@types/debug@4.1.12)(@types/node@22.18.6)(jiti@2.6.0)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
       webpack:
         specifier: ^5.101.3
-        version: 5.101.3(esbuild@0.25.10)
+        version: 5.101.3
 
   playground:
     devDependencies:
@@ -12525,16 +12528,14 @@ snapshots:
 
   term-size@2.2.1: {}
 
-  terser-webpack-plugin@5.3.14(esbuild@0.25.10)(webpack@5.101.3(esbuild@0.25.10)):
+  terser-webpack-plugin@5.3.14(webpack@5.101.3):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       jest-worker: 27.5.1
       schema-utils: 4.3.2
       serialize-javascript: 6.0.2
       terser: 5.44.0
-      webpack: 5.101.3(esbuild@0.25.10)
-    optionalDependencies:
-      esbuild: 0.25.10
+      webpack: 5.101.3
 
   terser@5.44.0:
     dependencies:
@@ -13070,7 +13071,7 @@ snapshots:
 
   webpack-virtual-modules@0.6.2: {}
 
-  webpack@5.101.3(esbuild@0.25.10):
+  webpack@5.101.3:
     dependencies:
       '@types/eslint-scope': 3.7.7
       '@types/estree': 1.0.8
@@ -13094,7 +13095,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 4.3.2
       tapable: 2.2.3
-      terser-webpack-plugin: 5.3.14(esbuild@0.25.10)(webpack@5.101.3(esbuild@0.25.10))
+      terser-webpack-plugin: 5.3.14(webpack@5.101.3)
       watchpack: 2.4.4
       webpack-sources: 3.3.3
     transitivePeerDependencies:

@@ -14,7 +14,8 @@
 		"rolldown",
 		"esbuild",
 		"farm",
-		"transform"
+		"transform",
+		"npm-package"
 	],
 	"homepage": "https://github.com/kitschpatrol/unplugin-aphex",
 	"bugs": "https://github.com/kitschpatrol/unplugin-aphex/issues",
@@ -58,13 +59,13 @@
 		"dist"
 	],
 	"scripts": {
-		"build": "tsdown",
+		"build": "tsdown --no-fixed-extension",
 		"clean": "git rm -f pnpm-lock.yaml ; git clean -fdX",
 		"dev": "tsdown --watch",
 		"fix": "ksc fix",
 		"lint": "ksc lint",
 		"play": "npm -C playground run dev",
-		"release": "bumpp --commit 'Release: %s' && pnpm run build && pnpm publish --otp $(op read 'op://Personal/Npmjs/one-time password?attribute=otp')",
+		"release": "bumpp --commit 'Release: %s' && pnpm run build && NPM_AUTH_TOKEN=$(op read 'op://Personal/npm/token') && pnpm publish",
 		"test": "vitest"
 	},
 	"dependencies": {
@@ -72,20 +73,20 @@
 		"unplugin": "^2.3.10"
 	},
 	"devDependencies": {
-		"@kitschpatrol/shared-config": "^5.7.0",
-		"@nuxt/kit": "^4.1.2",
-		"@nuxt/schema": "^4.1.2",
-		"@types/node": "^22.18.6",
-		"bumpp": "^10.2.3",
+		"@kitschpatrol/shared-config": "^5.8.1",
+		"@nuxt/kit": "^4.2.0",
+		"@nuxt/schema": "^4.2.0",
+		"@types/node": "^22.19.0",
+		"bumpp": "^10.3.1",
 		"defu": "^6.1.4",
 		"nodemon": "^3.1.10",
-		"rollup": "^4.52.0",
-		"tsdown": "^0.15.4",
-		"tsx": "^4.20.5",
-		"typescript": "~5.9.2",
-		"vite": "^7.1.7",
+		"rollup": "^4.52.5",
+		"tsdown": "^0.15.12",
+		"tsx": "^4.20.6",
+		"typescript": "~5.9.3",
+		"vite": "^7.2.1",
 		"vitest": "^3.2.4",
-		"webpack": "^5.101.3"
+		"webpack": "^5.102.1"
 	},
 	"peerDependencies": {
 		"@farmfe/core": ">=1",
@@ -119,7 +120,7 @@
 			"optional": true
 		}
 	},
-	"packageManager": "pnpm@10.17.1",
+	"packageManager": "pnpm@10.20.0",
 	"engines": {
 		"node": ">=20.19.0"
 	},

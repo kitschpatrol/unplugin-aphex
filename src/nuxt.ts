@@ -13,7 +13,7 @@ export default defineNuxtModule<ModuleOptions>({
 		configKey: 'unpluginAphex',
 		name: 'nuxt-unplugin-aphex',
 	},
-	setup(options, _nuxt) {
+	setup(options, _) {
 		addVitePlugin(() => vite(options))
 		addWebpackPlugin(() => webpack(options))
 

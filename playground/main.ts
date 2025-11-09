@@ -1,30 +1,56 @@
 console.log('Loaded main!')
 
-const testPath = '~aphex/Tiny/tiny'
-const dynamicImport = await import(testPath2)
+const test = 'virtual:config'
 
-console.log('----------------------------------')
-console.log(dynamicImport)
-console.log(dynamicImport.default)
+const config = await import(test);
 
-// import photoPath from '~aphex/test-album/lab-5'
-// import anotherPhotoPath from '~aphex/test-album/prototype'
-// // import photoPathProtocol from 'photos://52B90B1B-731F-44CE-B46E-ABBC752FF3DB'
+console.log('Config:', config)
+// -----------------------------------------------
+document.body.append(document.createElement('hr'))
+// -----------------------------------------------
 
-// console.log(photoPath)
-// console.assert(photoPath === '/@fs/node_modules/.cache/aphex/lab-5.png')
+// Support for static imports
+import imageStatic from '~aphex/Tiny/tiny'
+console.log('Static import:', imageStatic)
 
-// const img = document.createElement('img')
-// img.src = photoPath
-// document.body.append(img)
+const imageStaticElement = document.createElement('img')
+imageStaticElement.src = imageStatic
+imageStaticElement.width = 100
+document.body.append(imageStaticElement)
 
-// const img2 = document.createElement('img')
-// img2.src = anotherPhotoPath
-// document.body.append(img2)
+// -----------------------------------------------
+document.body.append(document.createElement('hr'))
+// -----------------------------------------------
 
-// const photoPathElement = document.createElement('p')
-// photoPathElement.innerHTML = photoPath
-// document.body.append(photoPathElement)
+// Support for dynamic imports with hardcoded path
+const imageDynamic = await import('~aphex/Tiny/tiny')
+console.log('Dynamic import:', imageDynamic.default)
 
-// eslint-disable-next-line unicorn/require-module-specifiers
-export {}
+const imageDynamicElement = document.createElement('img')
+imageDynamicElement.src = imageDynamic.default
+imageDynamicElement.width = 100
+document.body.append(imageDynamicElement)
+
+// -----------------------------------------------
+document.body.append(document.createElement('hr'))
+// -----------------------------------------------
+
+
+// Support for dynamic imports with variable path
+
+try {
+  const photoPath = '~aphex/Tiny/tiny'
+  const imageTemplate = await import(photoPath) as { default: string }
+  const imageTemplateElement = document.createElement('img')
+  imageTemplateElement.src = imageTemplate.default
+  imageTemplateElement.width = 100
+  document.body.append(imageTemplateElement)
+}
+catch (error) {
+  console.log(error)
+}
+
+// -----------------------------------------------
+document.body.append(document.createElement('hr'))
+// -----------------------------------------------
+ 

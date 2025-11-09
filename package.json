@@ -64,7 +64,7 @@
 		"dev": "tsdown --watch",
 		"fix": "ksc fix",
 		"lint": "ksc lint",
-		"play": "npm -C playground run dev",
+		"play": "poptab ; pnpm -C playground run dev",
 		"release": "bumpp --commit 'Release: %s' && pnpm run build && NPM_AUTH_TOKEN=$(op read 'op://Personal/npm/token') && pnpm publish",
 		"test": "vitest"
 	},
@@ -80,11 +80,13 @@
 		"bumpp": "^10.3.1",
 		"defu": "^6.1.4",
 		"nodemon": "^3.1.10",
+		"poptab": "^1.0.3",
 		"rollup": "^4.52.5",
 		"tsdown": "^0.15.12",
 		"tsx": "^4.20.6",
 		"typescript": "~5.9.3",
 		"vite": "^7.2.1",
+		"vite-plugin-mkcert": "^1.17.9",
 		"vitest": "^3.2.4",
 		"webpack": "^5.102.1"
 	},

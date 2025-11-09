@@ -32,15 +32,13 @@
 	"type": "module",
 	"exports": {
 		".": "./dist/index.js",
-		"./astro": "./dist/astro.js",
+		"./*": "./*",
+		"./api": "./dist/api.js",
 		"./esbuild": "./dist/esbuild.js",
 		"./farm": "./dist/farm.js",
-		"./nuxt": "./dist/nuxt.js",
-		"./package.json": "./package.json",
 		"./rolldown": "./dist/rolldown.js",
 		"./rollup": "./dist/rollup.js",
 		"./rspack": "./dist/rspack.js",
-		"./types": "./dist/types.js",
 		"./vite": "./dist/vite.js",
 		"./webpack": "./dist/webpack.js"
 	},
@@ -59,7 +57,7 @@
 		"dist"
 	],
 	"scripts": {
-		"build": "tsdown --no-fixed-extension",
+		"build": "tsdown",
 		"clean": "git rm -f pnpm-lock.yaml ; git clean -fdX",
 		"dev": "tsdown --watch",
 		"fix": "ksc fix",
@@ -70,61 +68,25 @@
 	},
 	"dependencies": {
 		"@kitschpatrol/aphex": "../aphex",
-		"unplugin": "^2.3.10"
+		"@types/node": "~22.16.5",
+		"defu": "^6.1.4",
+		"unplugin": "^2.3.10",
+		"unplugin-utils": "^0.3.1"
 	},
 	"devDependencies": {
-		"@kitschpatrol/shared-config": "^5.8.1",
-		"@nuxt/kit": "^4.2.0",
-		"@nuxt/schema": "^4.2.0",
-		"@types/node": "^22.19.0",
+		"@kitschpatrol/shared-config": "^5.8.3",
+		"@sxzz/test-utils": "^0.5.12",
 		"bumpp": "^10.3.1",
-		"defu": "^6.1.4",
-		"nodemon": "^3.1.10",
+		"esbuild": "^0.25.12",
 		"poptab": "^1.0.3",
-		"rollup": "^4.52.5",
-		"tsdown": "^0.15.12",
-		"tsx": "^4.20.6",
+		"tsdown": "^0.16.1",
+		"type-fest": "^5.2.0",
 		"typescript": "~5.9.3",
-		"vite": "^7.2.1",
-		"vite-plugin-mkcert": "^1.17.9",
-		"vitest": "^3.2.4",
-		"webpack": "^5.102.1"
-	},
-	"peerDependencies": {
-		"@farmfe/core": ">=1",
-		"@nuxt/kit": "^3",
-		"@nuxt/schema": "^3",
-		"esbuild": "*",
-		"rollup": "^3",
-		"vite": ">=3",
-		"webpack": "^4 || ^5"
-	},
-	"peerDependenciesMeta": {
-		"@farmfe/core": {
-			"optional": true
-		},
-		"@nuxt/kit": {
-			"optional": true
-		},
-		"@nuxt/schema": {
-			"optional": true
-		},
-		"esbuild": {
-			"optional": true
-		},
-		"rollup": {
-			"optional": true
-		},
-		"vite": {
-			"optional": true
-		},
-		"webpack": {
-			"optional": true
-		}
+		"vitest": "^4.0.8"
 	},
 	"packageManager": "pnpm@10.20.0",
 	"engines": {
-		"node": ">=20.19.0"
+		"node": ">=22.16.0"
 	},
 	"os": [
 		"darwin"

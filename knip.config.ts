@@ -1,7 +1,7 @@
 import { knipConfig } from '@kitschpatrol/knip-config'
 
 export default knipConfig({
-	ignore: ['tests/fixtures/basic.js'],
+	ignore: ['test/fixtures/**/*.js'],
 	ignoreDependencies: [
 		'@kitschpatrol/aphex',
 		'@nuxt/kit',

@@ -1,0 +1,9 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`rollup > basic.js 1`] = `
+"// basic.js
+const someValue = 10;
+
+export { someValue };
+"
+`;

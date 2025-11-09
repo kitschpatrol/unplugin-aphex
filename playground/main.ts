@@ -1,10 +1,5 @@
 console.log('Loaded main!')
 
-const test = 'virtual:config'
-
-const config = await import(test);
-
-console.log('Config:', config)
 // -----------------------------------------------
 document.body.append(document.createElement('hr'))
 // -----------------------------------------------
@@ -35,22 +30,21 @@ document.body.append(imageDynamicElement)
 document.body.append(document.createElement('hr'))
 // -----------------------------------------------
 
-
 // Support for dynamic imports with variable path
 
-try {
-  const photoPath = '~aphex/Tiny/tiny'
-  const imageTemplate = await import(photoPath) as { default: string }
-  const imageTemplateElement = document.createElement('img')
-  imageTemplateElement.src = imageTemplate.default
-  imageTemplateElement.width = 100
-  document.body.append(imageTemplateElement)
-}
-catch (error) {
-  console.log(error)
-}
+// TODO import virtual module
+// try {
+// 	const photoPath = '~aphex/Tiny/tiny'
+// 	// eslint-disable-next-line ts/no-unsafe-type-assertion
+// 	const imageTemplate = (await import(photoPath)) as { default: string }
+// 	const imageTemplateElement = document.createElement('img')
+// 	imageTemplateElement.src = imageTemplate.default
+// 	imageTemplateElement.width = 100
+// 	document.body.append(imageTemplateElement)
+// } catch (error) {
+// 	console.log(error)
+// }
 
 // -----------------------------------------------
 document.body.append(document.createElement('hr'))
 // -----------------------------------------------
- 

@@ -11,77 +11,17 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
 			await aphexExport.initialize()
 		},
 		enforce: 'pre',
-		load(id) {
-			console.log('load', id)
-			if (id === '\0virtual:aphex-loader') {
-				return String.raw`
-				export async function loadAphex(photoId) {
-					const cleanId = photoId.replace(/^~(?:photos|aphex)\/+/, '')
-					
-					// Check if we're in SSR context (Node.js)
-					const isSSR = typeof window === 'undefined'
-					const baseUrl = isSSR 
-						? (process.env.VITE_DEV_SERVER_URL || 'http://localhost:4321')
-						: ''
-					
-					const response = await fetch(baseUrl + '/__aphex/' + cleanId)
-					if (!response.ok) {
-						throw new Error('Failed to load photo: ' + cleanId)
-					}
-					return response.text()
-				}
-				`
-			}
-		},
 		name: 'unplugin-aphex',
-		async resolveId(id) {
-			// Virtual loader module
-			if (id === 'virtual:aphex-loader') {
-				console.log('resolveId', id)
-				return '\0virtual:aphex-loader'
-			}
-
-			// Static imports: ~photos/... or ~aphex/...
-			if (aphexExport.isIdentifier(id)) {
-				console.log('resolveId', id)
-				return aphexExport.exportPhoto(id) // Returns path, updates pathsSeen
-			}
-		},
-		// Vite-specific features
-		vite: {
-			configureServer(server) {
-				server.middlewares.use(async (request, response, next) => {
-					console.log('----------------------------------')
-					console.log('IN OUTER MIDDLEWARE')
-					console.log('request.url', request.url)
-					if (!request.url?.startsWith('/__aphex/')) {
-						next()
-						return
-					}
-
-					try {
-						const photoId = request.url.slice('/__aphex/'.length)
-						// Export photo and update pathsSeen
-						const photoPath = await aphexExport.exportPhoto(`~photos/${photoId}`)
-
-						// Use Vite's /@fs/ prefix to serve absolute file paths...
-
-						// Return the photo path as text
-						response.setHeader('Content-Type', 'text/plain')
-						response.setHeader('Cache-Control', 'no-cache')
-						response.end(`/@fs/${photoPath}`)
-
-						// Next()
-					} catch (error) {
-						console.error('[aphex] Error:', error)
-						response.statusCode = 500
-						response.end('Error resolving photo')
-					}
-				})
+		resolveId: {
+			filter: {
+				id: aphexExport.identifierPattern,
+			},
+			async handler(id) {
+				return aphexExport.exportPhoto(id)
 			},
 		},
 		async writeBundle() {
-			// On "build" only - prune unused cache files
+			// On "build" only...
 			await aphexExport.pruneCache()
 		},
 	}

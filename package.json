@@ -35,6 +35,9 @@
 		"./*": "./*",
 		"./api": "./dist/api.js",
 		"./esbuild": "./dist/esbuild.js",
+		"./ext": {
+			"types": "./ext.d.ts"
+		},
 		"./farm": "./dist/farm.js",
 		"./rolldown": "./dist/rolldown.js",
 		"./rollup": "./dist/rollup.js",
@@ -54,6 +57,7 @@
 		}
 	},
 	"files": [
+		"./ext.d.ts",
 		"dist"
 	],
 	"scripts": {
@@ -76,6 +80,7 @@
 	"devDependencies": {
 		"@kitschpatrol/shared-config": "^5.8.3",
 		"@sxzz/test-utils": "^0.5.12",
+		"@vitest/browser-playwright": "^4.0.8",
 		"bumpp": "^10.3.1",
 		"esbuild": "^0.25.12",
 		"poptab": "^1.0.3",

@@ -67,7 +67,7 @@
 		"test": "vitest"
 	},
 	"dependencies": {
-		"@kitschpatrol/aphex": "../aphex",
+		"@kitschpatrol/aphex": "file:../aphex",
 		"@types/node": "~22.16.5",
 		"defu": "^6.1.4",
 		"unplugin": "^2.3.10",

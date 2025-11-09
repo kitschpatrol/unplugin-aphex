@@ -13,12 +13,18 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
 		enforce: 'pre',
 		load(id) {
 			console.log('load', id)
-			// Generate virtual loader module
 			if (id === '\0virtual:aphex-loader') {
 				return String.raw`
 				export async function loadAphex(photoId) {
 					const cleanId = photoId.replace(/^~(?:photos|aphex)\/+/, '')
-					const response = await fetch('/__aphex/' + cleanId)
+					
+					// Check if we're in SSR context (Node.js)
+					const isSSR = typeof window === 'undefined'
+					const baseUrl = isSSR 
+						? (process.env.VITE_DEV_SERVER_URL || 'http://localhost:4321')
+						: ''
+					
+					const response = await fetch(baseUrl + '/__aphex/' + cleanId)
 					if (!response.ok) {
 						throw new Error('Failed to load photo: ' + cleanId)
 					}
@@ -45,6 +51,9 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
 		vite: {
 			configureServer(server) {
 				server.middlewares.use(async (request, response, next) => {
+					console.log('----------------------------------')
+					console.log('IN OUTER MIDDLEWARE')
+					console.log('request.url', request.url)
 					if (!request.url?.startsWith('/__aphex/')) {
 						next()
 						return

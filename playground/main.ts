@@ -1,4 +1,4 @@
-console.log('Loaded main!')
+// Console.log('Loaded main!')
 
 // -----------------------------------------------
 document.body.append(document.createElement('hr'))
@@ -30,19 +30,25 @@ document.body.append(imageDynamicElement)
 document.body.append(document.createElement('hr'))
 // -----------------------------------------------
 
-// Support for dynamic imports with variable path
+// Support for dynamic imports with variable path using virtual loader module
+import { loadAphex } from 'virtual:aphex-loader'
 
-// TODO import virtual module
-// try {
-// 	const photoPath = '~aphex/Tiny/tiny'
-// 	// eslint-disable-next-line ts/no-unsafe-type-assertion
-// 	const imageTemplate = (await import(photoPath)) as { default: string }
-// 	const imageTemplateElement = document.createElement('img')
-// 	imageTemplateElement.src = imageTemplate.default
-// 	imageTemplateElement.width = 100
-// 	document.body.append(imageTemplateElement)
-// } catch (error) {
-// 	console.log(error)
+// Try {
+const photoPath = '~aphex/Tiny/tiny'
+
+const imageVirtual = await loadAphex(photoPath)
+
+// 	// const imageReimported = await import(imageVirtual)
+
+console.log(`Load Aphex Dynamic import:`, imageVirtual)
+// 	// Console.log(imageReimported)
+
+const imageVirtualElement = document.createElement('img')
+imageVirtualElement.src = imageVirtual
+imageVirtualElement.width = 100
+document.body.append(imageVirtualElement)
+// } catch (error: unknown) {
+// 	console.error('Virtual loader resolveAphexPath failed:', error)
 // }
 
 // -----------------------------------------------

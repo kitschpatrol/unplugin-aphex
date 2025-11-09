@@ -62,6 +62,14 @@ export class AphexExport {
 		return result.path
 	}
 
+	public getAllExportedPaths(): Set<string> {
+		return this.pathsSeen
+	}
+
+	public getAssetFileName(photoPath: string): string {
+		return path.basename(photoPath)
+	}
+
 	public async initialize(): Promise<void> {
 		await fs.mkdir(this.pluginOptions.cacheDirectory, { recursive: true })
 
@@ -92,6 +100,10 @@ export class AphexExport {
 		} else if (this.pluginOptions.verbose) {
 			console.log('Skipping cache pruning because pruneCacheOnBuild is disabled')
 		}
+	}
+
+	public async readPhotoContent(photoPath: string): Promise<Uint8Array> {
+		return fs.readFile(photoPath)
 	}
 }
 

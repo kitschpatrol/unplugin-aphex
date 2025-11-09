@@ -2,3 +2,4 @@
 
 /// <reference types="vite/client" />
 /// <reference types="../dist/env.d.ts" />
+/// <reference types="../dist/client.d.ts" />

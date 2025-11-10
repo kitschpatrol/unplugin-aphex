@@ -4,7 +4,7 @@
  */
 
 import { createRolldownPlugin } from 'unplugin'
-import { unpluginFactory } from '.'
+import { unpluginFactory } from './index'
 
 /**
  * Rolldown plugin

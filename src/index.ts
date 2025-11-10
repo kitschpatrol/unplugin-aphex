@@ -11,6 +11,9 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
 			await aphexExport.initialize()
 		},
 		enforce: 'pre',
+		loadInclude(id) {
+			return aphexExport.isIdentifier(id)
+		},
 		name: 'unplugin-aphex',
 		resolveId: {
 			filter: {
@@ -22,6 +25,7 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
 		},
 		async writeBundle() {
 			// On "build" only...
+			// TODO a problem for middleware?
 			await aphexExport.pruneCache()
 		},
 	}

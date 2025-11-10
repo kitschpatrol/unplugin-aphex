@@ -34,10 +34,10 @@
 		".": "./dist/index.js",
 		"./*": "./*",
 		"./api": "./dist/api.js",
-		"./esbuild": "./dist/esbuild.js",
-		"./ext": {
-			"types": "./ext.d.ts"
+		"./client": {
+			"types": "./dist/client.d.ts"
 		},
+		"./esbuild": "./dist/esbuild.js",
 		"./farm": "./dist/farm.js",
 		"./rolldown": "./dist/rolldown.js",
 		"./rollup": "./dist/rollup.js",
@@ -57,7 +57,6 @@
 		}
 	},
 	"files": [
-		"./ext.d.ts",
 		"dist"
 	],
 	"scripts": {
@@ -82,14 +81,13 @@
 		"@sxzz/test-utils": "^0.5.12",
 		"@vitest/browser-playwright": "^4.0.8",
 		"bumpp": "^10.3.1",
-		"esbuild": "^0.25.12",
 		"poptab": "^1.0.3",
 		"tsdown": "^0.16.1",
 		"type-fest": "^5.2.0",
 		"typescript": "~5.9.3",
 		"vitest": "^4.0.8"
 	},
-	"packageManager": "pnpm@10.20.0",
+	"packageManager": "pnpm@10.21.0",
 	"engines": {
 		"node": ">=22.16.0"
 	},

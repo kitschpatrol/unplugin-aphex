@@ -49,6 +49,10 @@ export class AphexExport {
 			this.aphexOptions,
 		)
 
+		// TODO verbose...
+		// console.log('----------------------------------')
+		// console.log(result)
+
 		if (this.pluginOptions.pruneCacheOnBuild) {
 			this.pathsSeen.add(result.path)
 		}
@@ -78,8 +82,8 @@ export class AphexExport {
 		}
 	}
 
-	public isIdentifier(identifier: string): boolean {
-		return this.identifierPattern.test(identifier)
+	public isIdentifier(identifier: unknown): boolean {
+		return typeof identifier === 'string' && this.identifierPattern.test(identifier)
 	}
 
 	public async pruneCache(): Promise<void> {

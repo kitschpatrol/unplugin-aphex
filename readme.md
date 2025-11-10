@@ -143,7 +143,7 @@ export default {
 
 <br></details>
 
-### 3. Configure TypeScript
+### 3. Configure TypeScript (Optional)
 
 _Skip this step if you're using plain JavaScript._
 
@@ -167,6 +167,18 @@ This step should take care of errors like:
 
 ```sh
 Cannot find module '~./test/assets/test-sketch.tldr' or its corresponding type declarations.ts(2307)
+```
+
+### 4. Notify ESLint (Optional)
+
+If you use the [eslint-plugin-import-x](https://github.com/un-ts/eslint-plugin-import-x) plugin or similar, you may need to whitelist the `~aphex/` module prefix in the [import-x/no-unresolved](https://github.com/un-ts/eslint-plugin-import-x/blob/v4.16.1/docs/rules/no-unresolved.md) rule in your ESLint config:
+
+```json
+{
+  "rules": {
+    "import/no-unresolved": ["error", { "ignore": ["^~aphex/", "^~photos/"] }]
+  }
+}
 ```
 
 ## Usage
@@ -198,3 +210,5 @@ The package itself requires `@types/node` version 22. Using version 20 to match 
 [MIT](license.txt) © Eric Mika
 
 <!-- /license -->
+
+<https://github.com/unplugin/unplugin-icons>

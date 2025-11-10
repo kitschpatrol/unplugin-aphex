@@ -4,7 +4,7 @@
  */
 
 import { createWebpackPlugin } from 'unplugin'
-import { unpluginFactory } from '.'
+import { unpluginFactory } from './index'
 
 // @case-police-ignore webpack
 

@@ -4,7 +4,7 @@
  */
 
 import { createVitePlugin } from 'unplugin'
-import { unpluginFactory } from '.'
+import { unpluginFactory } from './index'
 
 /**
  * Vite plugin

@@ -15,10 +15,7 @@ export default eslintConfig(
 		ts: {
 			overrides: {
 				// TODO decide on a prefix...
-				'import/no-unresolved': [
-					'error',
-					{ ignore: ['^~photos/', '^~aphex/', '^photos://', '^virtual:'] },
-				],
+				'import/no-unresolved': ['error', { ignore: ['^~aphex/'] }],
 				'jsdoc/require-description': 'off',
 				'jsdoc/require-jsdoc': 'off',
 				'new-cap': 'off',

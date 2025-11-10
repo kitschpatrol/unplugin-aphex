@@ -152,7 +152,7 @@ Add the extension declarations to your [types](https://www.typescriptlang.org/ts
 ```json
 {
   "compilerOptions": {
-    "types": ["@kitschpatrol/unplugin-aphex/ext"]
+    "types": ["@kitschpatrol/unplugin-aphex/client"]
   }
 }
 ```
@@ -160,13 +160,13 @@ Add the extension declarations to your [types](https://www.typescriptlang.org/ts
 Alternately, you can add a triple-slash package dependency directive to your global types file (e.g. `env.d.ts` or similar):
 
 ```ts
-/// <reference types="@kitschpatrol/unplugin-aphex/ext" />
+/// <reference types="@kitschpatrol/unplugin-aphex/client" />
 ```
 
 This step should take care of errors like:
 
 ```sh
-Cannot find module '~./test/assets/test-sketch.tldr' or its corresponding type declarations.ts(2307)
+Cannot find module '~aphex/some-album/some-photo' or its corresponding type declarations.ts(2307)
 ```
 
 ### 4. Notify ESLint (Optional)
@@ -176,20 +176,22 @@ If you use the [eslint-plugin-import-x](https://github.com/un-ts/eslint-plugin-i
 ```json
 {
   "rules": {
-    "import/no-unresolved": ["error", { "ignore": ["^~aphex/", "^~photos/"] }]
+    "import/no-unresolved": ["error", { "ignore": ["^~aphex/"] }]
   }
 }
 ```
 
 ## Usage
 
-Any module imports prefixed with `~photos/` or `~aphex/` will be exported from Photos.app, processed, and cached to a project-local directory. The string path to the exported image is returned from the import statement.
+Any module imports prefixed with `~aphex/` will be exported from Photos.app, processed, and cached to a project-local directory. The string path to the exported image is returned from the import statement.
 
 For now, the (many) plugin option arguments are documented via inline JSDoc comments.
 
 ## Development Notes
 
 The package itself requires `@types/node` version 22. Using version 20 to match the supported `engines` will result in type errors from Unplugin when instantiating an `Aphex()` plugin.
+
+The [unplugin-icons](https://github.com/unplugin/unplugin-icons) project is a helpful example of another unplugin project that provides dynamically generated assets.
 
 ## Maintainers
 
@@ -210,5 +212,3 @@ The package itself requires `@types/node` version 22. Using version 20 to match 
 [MIT](license.txt) © Eric Mika
 
 <!-- /license -->
-
-<https://github.com/unplugin/unplugin-icons>

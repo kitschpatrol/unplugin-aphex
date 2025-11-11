@@ -15,7 +15,7 @@ export default eslintConfig(
 		ts: {
 			overrides: {
 				// TODO decide on a prefix...
-				'import/no-unresolved': ['error', { ignore: ['^~aphex/'] }],
+				'import/no-unresolved': ['error', { ignore: ['^~aphex/', 'esbuild'] }],
 				'jsdoc/require-description': 'off',
 				'jsdoc/require-jsdoc': 'off',
 				'new-cap': 'off',

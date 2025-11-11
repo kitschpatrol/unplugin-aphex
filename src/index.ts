@@ -20,7 +20,8 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
 				id: aphexExport.identifierPattern,
 			},
 			async handler(id) {
-				return aphexExport.exportPhoto(id)
+				const result = await aphexExport.exportPhoto(id)
+				return typeof result === 'string' ? result : JSON.stringify(result)
 			},
 		},
 		async writeBundle() {

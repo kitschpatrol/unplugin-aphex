@@ -1,5 +1,12 @@
+type AphexImageResultMetadata = {
+	format: string
+	height: number
+	src: string
+	width: number
+}
+
 declare module '~aphex/*' {
-	const content: string
+	const content: AphexImageResultMetadata | string
 	export default content
 }
 

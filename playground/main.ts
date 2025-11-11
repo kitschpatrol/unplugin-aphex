@@ -9,7 +9,7 @@ import imageStatic from '~aphex/Tiny/tiny'
 console.log('Static import:', imageStatic)
 
 const imageStaticElement = document.createElement('img')
-imageStaticElement.src = imageStatic
+imageStaticElement.src = typeof imageStatic === 'string' ? imageStatic : ''
 imageStaticElement.width = 100
 document.body.append(imageStaticElement)
 
@@ -19,11 +19,15 @@ document.body.append(document.createElement('hr'))
 
 // Support for dynamic imports with hardcoded path
 const temp = '~aphex/Tiny/tiny'
+// eslint-disable-next-line ts/no-unsafe-assignment
 const imageDynamic = await import(/* @vite-ignore */ temp)
 console.log(imageDynamic)
+// eslint-disable-next-line ts/no-unsafe-member-access
 console.log('Dynamic import:', imageDynamic.default)
 
 const imageDynamicElement = document.createElement('img')
+
+// eslint-disable-next-line ts/no-unsafe-assignment, ts/no-unsafe-member-access
 imageDynamicElement.src = imageDynamic.default
 imageDynamicElement.width = 100
 document.body.append(imageDynamicElement)

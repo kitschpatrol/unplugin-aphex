@@ -6,6 +6,7 @@ export default knipConfig({
 		'@kitschpatrol/aphex',
 		'@nuxt/kit',
 		'@nuxt/schema',
+		'@sxzz/test-utils',
 		'rollup',
 		'tsx',
 		'vite',

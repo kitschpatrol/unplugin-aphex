@@ -5,6 +5,13 @@ import path from 'node:path'
 import type { Options, ResolvedOptions as ResolvedPluginOptions } from './options'
 import { resolveOptions } from './options'
 
+export type AphexImageResultMetadata = {
+	format: string
+	height: number
+	src: string
+	width: number
+}
+
 export class AphexExport {
 	public get identifierPattern(): RegExp {
 		return /^~(?:photos|aphex)\/.+/
@@ -38,7 +45,7 @@ export class AphexExport {
 		}
 	}
 
-	public async exportPhoto(identifier: string): Promise<string> {
+	public async exportPhoto(identifier: string): Promise<AphexImageResultMetadata | string> {
 		const startTime = performance.now()
 
 		const cleanIdentifier = identifier.replace(/^~(?:photos|aphex)\/+/, '')
@@ -61,6 +68,15 @@ export class AphexExport {
 			const endTime = performance.now()
 			const duration = ((endTime - startTime) / 1000).toFixed(2)
 			console.log(`Aphex resolved "${identifier}" to "${result.path}" in ${duration}s`)
+		}
+
+		if (this.pluginOptions.returnMetadata) {
+			return {
+				format: path.extname(result.path).toLowerCase(),
+				height: result.photoInfo.edited?.height ?? result.photoInfo.original.height,
+				src: result.path,
+				width: result.photoInfo.edited?.width ?? result.photoInfo.original.width,
+			}
 		}
 
 		return result.path

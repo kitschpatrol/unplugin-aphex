@@ -31,6 +31,11 @@ export type Options = {
 	 */
 	pruneCacheOnBuild?: boolean
 	/**
+	 * Returns an object with some extra details on the image instead of a plain path string. Occasionally useful for integration with other platforms.
+	 * @default false
+	 */
+	returnMetadata?: boolean
+	/**
 	 * Require certain metadata fields to be present in the source files.
 	 * This is highly opinionated and not currently configurable.
 	 * @default false
@@ -67,6 +72,7 @@ export const DEFAULT_OPTIONS: ResolvedOptions = {
 	forceExport: false,
 	processOptions: undefined,
 	pruneCacheOnBuild: false,
+	returnMetadata: false,
 	validateMetadata: false,
 	verbose: true,
 }
@@ -80,11 +86,3 @@ export function resolveOptions(options?: Options): ResolvedOptions {
 	// eslint-disable-next-line ts/no-unsafe-type-assertion
 	return resolved as ResolvedOptions
 }
-
-// import type { FilterPattern } from 'unplugin-utils'
-
-// export interface Options {
-// 	enforce?: 'post' | 'pre' | undefined
-// 	exclude?: FilterPattern
-// 	include?: FilterPattern
-// }

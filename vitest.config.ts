@@ -14,10 +14,7 @@ export default defineConfig({
 		projects: [
 			// Browser project
 			{
-				plugins: [
-					// @ts-expect-error - types
-					aphexPlugin({ verbose: true }),
-				],
+				plugins: [aphexPlugin({ verbose: true })],
 				test: {
 					browser: {
 						enabled: true,

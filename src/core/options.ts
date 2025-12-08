@@ -60,7 +60,7 @@ export type ResolvedOptions = Simplify<
 
 export const DEFAULT_OPTIONS: ResolvedOptions = {
 	cacheDirectory: './node_modules/.cache/aphex',
-	// Gui export is just so slow in this context, we only
+	// GUI export is just so slow in this context, we only
 	// use it if explicitly requested by the user...
 	exportOptions: {
 		engineEdited: 'swift-photokit',

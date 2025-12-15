@@ -39,10 +39,6 @@ export class AphexExport {
 		assertEnabled(this.aphexOptions.syncOptions)
 		this.aphexOptions.syncOptions.deleteOthers = false // Always disable, dangerous
 		this.aphexOptions.syncOptions.forceUpdate = this.pluginOptions.forceExport
-
-		if (this.pluginOptions.verbose) {
-			console.log('Aphex plugin constructed')
-		}
 	}
 
 	public async exportPhoto(identifier: string): Promise<AphexImageResultMetadata | string> {

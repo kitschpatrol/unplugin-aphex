@@ -71,23 +71,23 @@
 	},
 	"dependencies": {
 		"@kitschpatrol/aphex": "file:../aphex",
-		"@types/node": "~22.19.1",
+		"@types/node": "~22.19.3",
 		"defu": "^6.1.4",
 		"unplugin": "^2.3.11",
 		"unplugin-utils": "^0.3.1"
 	},
 	"devDependencies": {
 		"@kitschpatrol/shared-config": "^5.10.0",
-		"@sxzz/test-utils": "^0.5.13",
+		"@sxzz/test-utils": "^0.5.14",
 		"@vitest/browser-playwright": "^4.0.15",
 		"bumpp": "^10.3.2",
 		"poptab": "^1.0.4",
-		"tsdown": "^0.17.2",
+		"tsdown": "^0.18.0",
 		"type-fest": "^5.3.1",
 		"typescript": "~5.9.3",
 		"vitest": "^4.0.15"
 	},
-	"packageManager": "pnpm@10.25.0",
+	"packageManager": "pnpm@10.26.0",
 	"engines": {
 		"node": ">=22.16.0"
 	},

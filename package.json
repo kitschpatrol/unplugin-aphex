@@ -78,16 +78,16 @@
 	},
 	"devDependencies": {
 		"@kitschpatrol/shared-config": "^5.10.0",
-		"@sxzz/test-utils": "^0.5.14",
-		"@vitest/browser-playwright": "^4.0.15",
+		"@sxzz/test-utils": "^0.5.15",
+		"@vitest/browser-playwright": "^4.0.16",
 		"bumpp": "^10.3.2",
 		"poptab": "^1.0.4",
-		"tsdown": "^0.18.0",
+		"tsdown": "^0.18.2",
 		"type-fest": "^5.3.1",
 		"typescript": "~5.9.3",
-		"vitest": "^4.0.15"
+		"vitest": "^4.0.16"
 	},
-	"packageManager": "pnpm@10.26.0",
+	"packageManager": "pnpm@10.26.1",
 	"engines": {
 		"node": ">=22.16.0"
 	},

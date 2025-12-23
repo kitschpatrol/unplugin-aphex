@@ -1,5 +1,10 @@
 import type { ExportOptions as ResolvedAphexOptions } from '@kitschpatrol/aphex'
-import { exportPhoto, mergeDefaultExportOptions } from '@kitschpatrol/aphex'
+import {
+	exportPhoto,
+	interactiveSessionStart,
+	interactiveSessionStop,
+	mergeDefaultExportOptions,
+} from '@kitschpatrol/aphex'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import type { Options, ResolvedOptions as ResolvedPluginOptions } from './options'
@@ -39,6 +44,13 @@ export class AphexExport {
 		assertEnabled(this.aphexOptions.syncOptions)
 		this.aphexOptions.syncOptions.deleteOthers = false // Always disable, dangerous
 		this.aphexOptions.syncOptions.forceUpdate = this.pluginOptions.forceExport
+	}
+
+	public async close(): Promise<void> {
+		if (this.pluginOptions.interactiveSession) {
+			console.log('Closing Aphex interactive session...')
+			await interactiveSessionStop()
+		}
 	}
 
 	public async exportPhoto(identifier: string): Promise<AphexImageResultMetadata | string> {
@@ -87,6 +99,11 @@ export class AphexExport {
 	}
 
 	public async initialize(): Promise<void> {
+		if (this.pluginOptions.interactiveSession) {
+			console.log('Initializing Aphex interactive session...')
+			await interactiveSessionStart()
+		}
+
 		await fs.mkdir(this.pluginOptions.cacheDirectory, { recursive: true })
 
 		if (this.pluginOptions.verbose) {

@@ -10,6 +10,9 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
 		async buildStart() {
 			await aphexExport.initialize()
 		},
+		async closeBundle() {
+			await aphexExport.close()
+		},
 		enforce: 'pre',
 		loadInclude(id) {
 			return aphexExport.isIdentifier(id)

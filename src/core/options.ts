@@ -15,10 +15,15 @@ export type Options = {
 	 */
 	exportOptions?: PartialDeep<ExportOptions['exportOptions']>
 	/**
-	 * Force image re-export even if existing image in the `cacheDirectory` appears unchanged from the source in Photos.app. This will be slow!
+	 * Force image re-export even if there's an existing image in the `cacheDirectory` appears unchanged from the source in Photos.app. This will be slow!
 	 * @default false
 	 */
 	forceExport?: boolean
+	/**
+	 * Experimental mode persists a single aphex-swift session for all requests, which can improve performance.
+	 * @default false
+	 */
+	interactiveSession?: boolean
 	/**
 	 * Additional image processing options. (Resizing, color profile enforcement, etc.)
 	 * Sensible defaults provided if undefined.
@@ -70,6 +75,7 @@ export const DEFAULT_OPTIONS: ResolvedOptions = {
 		fileNameAppendUuidFragment: true,
 	},
 	forceExport: false,
+	interactiveSession: false,
 	processOptions: undefined,
 	pruneCacheOnBuild: false,
 	returnMetadata: false,

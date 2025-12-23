@@ -4,7 +4,9 @@ import {
 	interactiveSessionStart,
 	interactiveSessionStop,
 	mergeDefaultExportOptions,
+	setLogger,
 } from '@kitschpatrol/aphex'
+import { getChildLogger, log, setDefaultLogOptions } from 'lognow'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import type { Options, ResolvedOptions as ResolvedPluginOptions } from './options'
@@ -46,6 +48,9 @@ export class AphexExport {
 	// Result cache: prevents re-processing already completed requests (in-memory + persisted)
 	private readonly resolvedCache = new Map<string, AphexImageResultMetadata | string>()
 
+	// In-flight request timing: tracks how long each request takes
+	private readonly startTimesByIdentifier = new Map<string, number>()
+
 	private get cacheFilePath(): string {
 		return path.join(this.pluginOptions.cacheDirectory, CACHE_FILE_NAME)
 	}
@@ -65,12 +70,20 @@ export class AphexExport {
 		assertEnabled(this.aphexOptions.syncOptions)
 		this.aphexOptions.syncOptions.deleteOthers = false // Always disable, dangerous
 		this.aphexOptions.syncOptions.forceUpdate = this.pluginOptions.cacheMode === 'disabled'
+
+		setDefaultLogOptions({
+			name: 'unplugin-aphex',
+			verbose: this.pluginOptions.verbose,
+		})
+
+		const aphexLogger = getChildLogger(log, 'aphex')
+
+		// Use the lognow logger for the aphex library
+		setLogger(aphexLogger)
 	}
 
 	public async close(): Promise<void> {
-		if (this.pluginOptions.verbose) {
-			console.log('Closing Aphex session...')
-		}
+		log.debug('Closing session...')
 		// Always call interactiveSessionStop() to clean up any internal subprocesses
 		// (e.g., exiftool) that the aphex library may have started, regardless of
 		// whether interactiveSession was explicitly enabled
@@ -85,9 +98,7 @@ export class AphexExport {
 			if (cached !== undefined) {
 				const cachedPath = typeof cached === 'string' ? cached : cached.src
 				if (await this.fileExists(cachedPath)) {
-					if (this.pluginOptions.verbose) {
-						console.log(`Aphex cache hit for "${identifier}"`)
-					}
+					log.debug(`Cache hit for "${identifier}"`)
 
 					if (this.pluginOptions.pruneCacheOnBuild) {
 						this.pathsSeen.add(cachedPath)
@@ -105,9 +116,7 @@ export class AphexExport {
 		// If already processing this identifier, wait for the existing promise (deduplication)
 		const pending = this.pendingRequests.get(identifier)
 		if (pending !== undefined) {
-			if (this.pluginOptions.verbose) {
-				console.log(`Aphex waiting for in-flight request for "${identifier}"`)
-			}
+			log.debug(`Waiting for in-flight request for "${identifier}"`)
 			return pending
 		}
 
@@ -139,9 +148,7 @@ export class AphexExport {
 
 	public async initialize(): Promise<void> {
 		if (this.pluginOptions.interactiveSession) {
-			if (this.pluginOptions.verbose) {
-				console.log('Initializing Aphex interactive session...')
-			}
+			log.debug('Initializing interactive session...')
 			await interactiveSessionStart()
 		}
 
@@ -149,10 +156,7 @@ export class AphexExport {
 
 		// Load persistent cache from disk
 		await this.loadPersistentCache()
-
-		if (this.pluginOptions.verbose) {
-			console.log(`Aphex plugin initialized with cache at "${this.pluginOptions.cacheDirectory}"`)
-		}
+		log.debug(`Initialized with cache at "${this.pluginOptions.cacheDirectory}"`)
 	}
 
 	public isIdentifier(identifier: unknown): boolean {
@@ -173,14 +177,12 @@ export class AphexExport {
 				}
 
 				if (!fileNamesToKeep.has(destinationFile)) {
-					if (this.pluginOptions.verbose) {
-						console.log(`Cleaning up unused Aphex image: ${destinationFile}`)
-					}
+					log.debug(`Cleaning up unused image: ${destinationFile}`)
 					await fs.rm(path.join(this.pluginOptions.cacheDirectory, destinationFile))
 				}
 			}
-		} else if (this.pluginOptions.verbose) {
-			console.log('Skipping cache pruning because pruneCacheOnBuild is disabled')
+		} else {
+			log.debug('Skipping cache pruning because pruneCacheOnBuild is disabled')
 		}
 	}
 
@@ -204,13 +206,11 @@ export class AphexExport {
 		await fs.writeFile(this.cacheFilePath, JSON.stringify(cache, undefined, 2))
 		this.persistentCacheDirty = false
 
-		if (this.pluginOptions.verbose) {
-			console.log(`Aphex saved ${this.resolvedCache.size} entries to persistent cache`)
-		}
+		log.debug(`Saved ${this.resolvedCache.size} entries to persistent cache`)
 	}
 
 	private async doExport(identifier: string): Promise<AphexImageResultMetadata | string> {
-		const startTime = performance.now()
+		this.startTimesByIdentifier.set(identifier, performance.now())
 
 		const cleanIdentifier = identifier.replace(/^~(?:photos|aphex)\/+/, '')
 
@@ -225,9 +225,14 @@ export class AphexExport {
 		}
 
 		if (this.pluginOptions.verbose) {
+			const startTime = this.startTimesByIdentifier.get(identifier)
+			if (startTime === undefined) {
+				throw new Error(`Start time not found for identifier "${identifier}"`)
+			}
+
 			const endTime = performance.now()
 			const duration = ((endTime - startTime) / 1000).toFixed(2)
-			console.log(`Aphex resolved "${identifier}" to "${result.path}" in ${duration}s`)
+			log.debug(`Resolved "${identifier}" to "${result.path}" in ${duration}s`)
 		}
 
 		if (this.pluginOptions.returnMetadata) {
@@ -261,9 +266,7 @@ export class AphexExport {
 				this.resolvedCache.set(identifier, entry.result)
 			}
 
-			if (this.pluginOptions.verbose) {
-				console.log(`Aphex loaded ${this.resolvedCache.size} entries from persistent cache`)
-			}
+			log.debug(`Registered ${this.resolvedCache.size} entries from persistent cache`)
 		} catch {
 			// Cache file doesn't exist or is invalid, start fresh
 		}

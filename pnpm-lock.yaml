@@ -36,6 +36,9 @@ importers:
       bumpp:
         specifier: ^10.3.2
         version: 10.3.2
+      lognow:
+        specifier: ^0.4.1
+        version: 0.4.1
       poptab:
         specifier: ^1.0.4
         version: 1.0.4
@@ -910,6 +913,26 @@ packages:
     hasBin: true
     peerDependencies:
       typescript: ^5.8.3
+
+  '@loglayer/context-manager@1.2.0':
+    resolution: {integrity: sha512-0bIN4NP6GDcgVVQi5K9kDfxK9T8IV3PHpLVCih23q7LlxNUlBwWEZpdhpEkkum0nlVYviLw0ugBbogsd5IijTw==}
+    engines: {node: '>=18'}
+
+  '@loglayer/log-level-manager@1.0.5':
+    resolution: {integrity: sha512-kEeJqkc7iJO4hwvUjMVS9gPJJzTEPGRpI3DzMaW8pQRYhSsg4PyJnHDaCd8UqEyrxnuT8YJ7iqsZ9BdyuO9Ckg==}
+    engines: {node: '>=18'}
+
+  '@loglayer/plugin@2.2.7':
+    resolution: {integrity: sha512-k9O21Z7TxFemZUrC4YL2pJZG48QQPLCPVJQ1zg42y0kYveACuIb0a7abe40MkfrZOu9ApNHQHC5wcggQf0V7pA==}
+    engines: {node: '>=18'}
+
+  '@loglayer/shared@3.3.0':
+    resolution: {integrity: sha512-E596RsJSRthGkG7PTGAeja5OIwB0fK3FCvZYXx7nFSv+J1Bk8RJO/vb6IB5th8dB9zoaQ/ahvlZ1Jfhg0dy/Mg==}
+    engines: {node: '>=18'}
+
+  '@loglayer/transport@2.3.13':
+    resolution: {integrity: sha512-sfw6xvsIOzTh4l8ZpSH7Vfj3ajH/y+PUBShclqjaLtXxurKGh8xZuciDsL3wuern+Ea/r8+iT2vzK3d2BSUyQQ==}
+    engines: {node: '>=18'}
 
   '@napi-rs/nice-android-arm-eabi@1.1.1':
     resolution: {integrity: sha512-kjirL3N6TnRPv5iuHw36wnucNqXAO46dzK9oPb0wj076R5Xm8PfUVA9nAFB5ZNMmfJQJVKACAPd/Z2KYMppthw==}
@@ -3384,6 +3407,14 @@ packages:
 
   lodash@4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
+
+  loglayer@8.4.0:
+    resolution: {integrity: sha512-Og7/Ry13iL895uyuKBFr6JakloqeoHNlCFd3btQ/9apwd9NJtPFhEU5zPxeWu5EM+06XBuV5HWqHFTeBmaax1A==}
+    engines: {node: '>=18'}
+
+  lognow@0.4.1:
+    resolution: {integrity: sha512-uaUAOaXNdEyuc3Q3G7DXEHv+9p9XY2srNRhfcc27S1LrZSpp6KtaEiFcIlHULIDDovtMKeeggOeTSuPQRiNP7g==}
+    engines: {node: '>=20.19.0'}
 
   longest-streak@3.1.0:
     resolution: {integrity: sha512-9Ri+o0JYgehTaVBBDoMqIl8GXtbWg711O3srftcHhZ0dqnETqLaoIK0x17fUw9rFSlK/0NlsKe0Ahhyl5pXE2g==}
@@ -6158,6 +6189,24 @@ snapshots:
     transitivePeerDependencies:
       - '@types/node'
 
+  '@loglayer/context-manager@1.2.0':
+    dependencies:
+      '@loglayer/shared': 3.3.0
+
+  '@loglayer/log-level-manager@1.0.5':
+    dependencies:
+      '@loglayer/shared': 3.3.0
+
+  '@loglayer/plugin@2.2.7':
+    dependencies:
+      '@loglayer/shared': 3.3.0
+
+  '@loglayer/shared@3.3.0': {}
+
+  '@loglayer/transport@2.3.13':
+    dependencies:
+      '@loglayer/shared': 3.3.0
+
   '@napi-rs/nice-android-arm-eabi@1.1.1':
     optional: true
 
@@ -8847,6 +8896,19 @@ snapshots:
   lodash.truncate@4.4.2: {}
 
   lodash@4.17.21: {}
+
+  loglayer@8.4.0:
+    dependencies:
+      '@loglayer/context-manager': 1.2.0
+      '@loglayer/log-level-manager': 1.0.5
+      '@loglayer/plugin': 2.2.7
+      '@loglayer/shared': 3.3.0
+      '@loglayer/transport': 2.3.13
+
+  lognow@0.4.1:
+    dependencies:
+      '@types/node': 20.19.27
+      loglayer: 8.4.0
 
   longest-streak@3.1.0: {}
 

@@ -68,12 +68,13 @@ export class AphexExport {
 	}
 
 	public async close(): Promise<void> {
-		if (this.pluginOptions.interactiveSession) {
-			if (this.pluginOptions.verbose) {
-				console.log('Closing Aphex interactive session...')
-			}
-			await interactiveSessionStop()
+		if (this.pluginOptions.verbose) {
+			console.log('Closing Aphex session...')
 		}
+		// Always call interactiveSessionStop() to clean up any internal subprocesses
+		// (e.g., exiftool) that the aphex library may have started, regardless of
+		// whether interactiveSession was explicitly enabled
+		await interactiveSessionStop()
 	}
 
 	public async exportPhoto(identifier: string): Promise<AphexImageResultMetadata | string> {

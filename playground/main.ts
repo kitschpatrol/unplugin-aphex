@@ -5,13 +5,29 @@ document.body.append(document.createElement('hr'))
 // -----------------------------------------------
 
 // Support for static imports
-import imageStatic from '~aphex/Tiny/tiny'
+import imageStatic from '~aphex/Projects/LP/ABB - Client Centers/Product/ar-render-detail'
+import imageStatic2 from '~aphex/Tiny/tiny'
+import imageStatic3 from '~aphex/Tiny/tiny'
+
 console.log('Static import:', imageStatic)
 
 const imageStaticElement = document.createElement('img')
 imageStaticElement.src = typeof imageStatic === 'string' ? imageStatic : ''
 imageStaticElement.width = 100
 document.body.append(imageStaticElement)
+
+console.log('Static import:', imageStatic2)
+
+const imageStatic2Element = document.createElement('img')
+imageStatic2Element.src = typeof imageStatic2 === 'string' ? imageStatic2 : ''
+imageStatic2Element.width = 100
+document.body.append(imageStatic2Element)
+
+console.log('Static import:', imageStatic3)
+const imageStatic3Element = document.createElement('img')
+imageStatic3Element.src = typeof imageStatic3 === 'string' ? imageStatic3 : ''
+imageStatic3Element.width = 100
+document.body.append(imageStatic3Element)
 
 // -----------------------------------------------
 document.body.append(document.createElement('hr'))

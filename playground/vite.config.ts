@@ -6,7 +6,16 @@ import Aphex from '../src/vite'
 process.env.BROWSER = 'chromium'
 
 export default defineConfig({
-	plugins: [Mkcert(), Inspect(), Aphex()],
+	plugins: [
+		Mkcert(),
+		Inspect(),
+		Aphex({
+			cacheMode: 'enabled',
+			interactiveSession: false,
+			pruneCacheOnBuild: true,
+			verbose: true,
+		}),
+	],
 	server: {
 		hmr: {
 			host: 'localhost',

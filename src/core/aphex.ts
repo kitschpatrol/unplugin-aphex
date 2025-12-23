@@ -1,5 +1,6 @@
 import type { ExportOptions as ResolvedAphexOptions } from '@kitschpatrol/aphex'
 import {
+	endExiftool,
 	exportPhoto,
 	interactiveSessionStart,
 	interactiveSessionStop,
@@ -83,11 +84,13 @@ export class AphexExport {
 	}
 
 	public async close(): Promise<void> {
-		log.debug('Closing session...')
-		// Always call interactiveSessionStop() to clean up any internal subprocesses
-		// (e.g., exiftool) that the aphex library may have started, regardless of
-		// whether interactiveSession was explicitly enabled
-		await interactiveSessionStop()
+		if (this.pluginOptions.interactiveSession) {
+			log.debug('Closing session...')
+			await interactiveSessionStop()
+		} else {
+			// Log.debug('Cleaning up exiftool...')
+			await endExiftool()
+		}
 	}
 
 	public async exportPhoto(identifier: string): Promise<AphexImageResultMetadata | string> {

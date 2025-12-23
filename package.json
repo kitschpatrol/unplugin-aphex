@@ -73,6 +73,7 @@
 		"@kitschpatrol/aphex": "file:../aphex",
 		"@types/node": "~22.19.3",
 		"defu": "^6.1.4",
+		"lognow": "^0.4.1",
 		"unplugin": "^2.3.11",
 		"unplugin-utils": "^0.3.1"
 	},
@@ -81,7 +82,6 @@
 		"@sxzz/test-utils": "^0.5.15",
 		"@vitest/browser-playwright": "^4.0.16",
 		"bumpp": "^10.3.2",
-		"lognow": "^0.4.1",
 		"poptab": "^1.0.4",
 		"tsdown": "^0.18.2",
 		"type-fest": "^5.3.1",

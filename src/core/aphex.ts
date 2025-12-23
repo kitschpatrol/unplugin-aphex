@@ -265,11 +265,30 @@ export class AphexExport {
 			// eslint-disable-next-line ts/no-unsafe-type-assertion
 			const cache = JSON.parse(cacheContent) as PersistentCache
 
+			let validEntries = 0
+			let staleEntries = 0
+
 			for (const [identifier, entry] of Object.entries(cache)) {
-				this.resolvedCache.set(identifier, entry.result)
+				const cachedPath = typeof entry.result === 'string' ? entry.result : entry.result.src
+
+				// Only load entries whose files actually exist on disk
+				if (await this.fileExists(cachedPath)) {
+					this.resolvedCache.set(identifier, entry.result)
+					validEntries++
+				} else {
+					// Mark cache as dirty so stale entries are removed on save
+					this.persistentCacheDirty = true
+					staleEntries++
+				}
 			}
 
-			log.debug(`Registered ${this.resolvedCache.size} entries from persistent cache`)
+			if (staleEntries > 0) {
+				log.debug(
+					`Removed ${staleEntries} stale entries from cache (files no longer exist on disk)`,
+				)
+			}
+
+			log.debug(`Registered ${validEntries} entries from persistent cache`)
 		} catch {
 			// Cache file doesn't exist or is invalid, start fresh
 		}

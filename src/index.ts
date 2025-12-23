@@ -7,6 +7,10 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
 	const aphexExport = new AphexExport(options)
 
 	return {
+		async buildEnd() {
+			// Save cache after each build (works in both dev and prod)
+			await aphexExport.savePersistentCache()
+		},
 		async buildStart() {
 			await aphexExport.initialize()
 		},

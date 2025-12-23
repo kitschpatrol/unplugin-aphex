@@ -10,15 +10,18 @@ export type Options = {
 	 */
 	cacheDirectory?: string
 	/**
+	 * Cache mode to use for the plugin.
+	 * - 'disabled': Never cache any images. Force image re-export even if there's an existing image in the `cacheDirectory` appears unchanged from the source in Photos.app. This will be slow!
+	 * - 'enabled': Use the cached image, but check for changes in Photos.app.
+	 * - 'aggressive': Use the first cached image forever (Fastest, may be outdated, suitable for development.)
+	 * @default 'enabled'
+	 */
+	cacheMode?: 'aggressive' | 'disabled' | 'enabled'
+	/**
 	 * Export options.
 	 * Sensible defaults provided if undefined.
 	 */
 	exportOptions?: PartialDeep<ExportOptions['exportOptions']>
-	/**
-	 * Force image re-export even if there's an existing image in the `cacheDirectory` appears unchanged from the source in Photos.app. This will be slow!
-	 * @default false
-	 */
-	forceExport?: boolean
 	/**
 	 * Experimental mode persists a single aphex-swift session for all requests, which can improve performance.
 	 * @default false
@@ -65,6 +68,7 @@ export type ResolvedOptions = Simplify<
 
 export const DEFAULT_OPTIONS: ResolvedOptions = {
 	cacheDirectory: './node_modules/.cache/aphex',
+	cacheMode: 'enabled',
 	// GUI export is just so slow in this context, we only
 	// use it if explicitly requested by the user...
 	exportOptions: {
@@ -74,7 +78,6 @@ export const DEFAULT_OPTIONS: ResolvedOptions = {
 		engineOriginalAlpha: 'swift-photokit',
 		fileNameAppendUuidFragment: true,
 	},
-	forceExport: false,
 	interactiveSession: false,
 	processOptions: undefined,
 	pruneCacheOnBuild: false,

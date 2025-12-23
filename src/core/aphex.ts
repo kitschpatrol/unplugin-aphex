@@ -17,6 +17,14 @@ export type AphexImageResultMetadata = {
 	width: number
 }
 
+type PersistentCacheEntry = {
+	result: AphexImageResultMetadata | string
+}
+
+type PersistentCache = Record<string, PersistentCacheEntry>
+
+const CACHE_FILE_NAME = '.aphex-plugin-cache.json'
+
 export class AphexExport {
 	public get identifierPattern(): RegExp {
 		return /^~(?:photos|aphex)\/.+/
@@ -27,7 +35,20 @@ export class AphexExport {
 	// Just for cleanup, aphex does its own cache monitoring / difference detection
 	private readonly pathsSeen: Set<string> = new Set<string>()
 
+	// In-flight request deduplication: prevents concurrent duplicate calls to aphex library
+	private readonly pendingRequests = new Map<string, Promise<AphexImageResultMetadata | string>>()
+
+	// Dirty flag for batched cache writes
+	private persistentCacheDirty = false
+
 	private readonly pluginOptions: ResolvedPluginOptions
+
+	// Result cache: prevents re-processing already completed requests (in-memory + persisted)
+	private readonly resolvedCache = new Map<string, AphexImageResultMetadata | string>()
+
+	private get cacheFilePath(): string {
+		return path.join(this.pluginOptions.cacheDirectory, CACHE_FILE_NAME)
+	}
 
 	constructor(options?: Options) {
 		this.pluginOptions = resolveOptions(options)
@@ -43,17 +64,151 @@ export class AphexExport {
 
 		assertEnabled(this.aphexOptions.syncOptions)
 		this.aphexOptions.syncOptions.deleteOthers = false // Always disable, dangerous
-		this.aphexOptions.syncOptions.forceUpdate = this.pluginOptions.forceExport
+		this.aphexOptions.syncOptions.forceUpdate = this.pluginOptions.cacheMode === 'disabled'
 	}
 
 	public async close(): Promise<void> {
 		if (this.pluginOptions.interactiveSession) {
-			console.log('Closing Aphex interactive session...')
+			if (this.pluginOptions.verbose) {
+				console.log('Closing Aphex interactive session...')
+			}
 			await interactiveSessionStop()
 		}
 	}
 
 	public async exportPhoto(identifier: string): Promise<AphexImageResultMetadata | string> {
+		// Only use cache lookup in 'aggressive' mode (fastest, may be outdated)
+		// 'enabled' and 'disabled' modes skip cache lookup to let aphex library validate
+		if (this.pluginOptions.cacheMode === 'aggressive') {
+			const cached = this.resolvedCache.get(identifier)
+			if (cached !== undefined) {
+				const cachedPath = typeof cached === 'string' ? cached : cached.src
+				if (await this.fileExists(cachedPath)) {
+					if (this.pluginOptions.verbose) {
+						console.log(`Aphex cache hit for "${identifier}"`)
+					}
+
+					if (this.pluginOptions.pruneCacheOnBuild) {
+						this.pathsSeen.add(cachedPath)
+					}
+
+					return cached
+				}
+
+				// Cached file no longer exists, remove stale entry
+				this.resolvedCache.delete(identifier)
+				this.persistentCacheDirty = true
+			}
+		}
+
+		// If already processing this identifier, wait for the existing promise (deduplication)
+		const pending = this.pendingRequests.get(identifier)
+		if (pending !== undefined) {
+			if (this.pluginOptions.verbose) {
+				console.log(`Aphex waiting for in-flight request for "${identifier}"`)
+			}
+			return pending
+		}
+
+		// Create the export promise and store it for deduplication
+		const exportPromise = this.doExport(identifier)
+		this.pendingRequests.set(identifier, exportPromise)
+
+		try {
+			const result = await exportPromise
+			// Always cache the result (all modes write to cache, only 'aggressive' reads from it)
+			this.resolvedCache.set(identifier, result)
+			this.persistentCacheDirty = true
+			// Save immediately since exports are infrequent and expensive
+			await this.savePersistentCache()
+			return result
+		} finally {
+			// Clean up pending request (whether success or failure)
+			this.pendingRequests.delete(identifier)
+		}
+	}
+
+	public getAllExportedPaths(): Set<string> {
+		return this.pathsSeen
+	}
+
+	public getAssetFileName(photoPath: string): string {
+		return path.basename(photoPath)
+	}
+
+	public async initialize(): Promise<void> {
+		if (this.pluginOptions.interactiveSession) {
+			if (this.pluginOptions.verbose) {
+				console.log('Initializing Aphex interactive session...')
+			}
+			await interactiveSessionStart()
+		}
+
+		await fs.mkdir(this.pluginOptions.cacheDirectory, { recursive: true })
+
+		// Load persistent cache from disk
+		await this.loadPersistentCache()
+
+		if (this.pluginOptions.verbose) {
+			console.log(`Aphex plugin initialized with cache at "${this.pluginOptions.cacheDirectory}"`)
+		}
+	}
+
+	public isIdentifier(identifier: unknown): boolean {
+		return typeof identifier === 'string' && this.identifierPattern.test(identifier)
+	}
+
+	public async pruneCache(): Promise<void> {
+		if (this.pluginOptions.pruneCacheOnBuild) {
+			const destinationFiles = await fs.readdir(this.pluginOptions.cacheDirectory, {})
+			const fileNamesToKeep = new Set(
+				[...this.pathsSeen].map((filePath) => path.basename(filePath)),
+			)
+
+			for (const destinationFile of destinationFiles) {
+				// Never delete the persistent cache file
+				if (destinationFile === CACHE_FILE_NAME) {
+					continue
+				}
+
+				if (!fileNamesToKeep.has(destinationFile)) {
+					if (this.pluginOptions.verbose) {
+						console.log(`Cleaning up unused Aphex image: ${destinationFile}`)
+					}
+					await fs.rm(path.join(this.pluginOptions.cacheDirectory, destinationFile))
+				}
+			}
+		} else if (this.pluginOptions.verbose) {
+			console.log('Skipping cache pruning because pruneCacheOnBuild is disabled')
+		}
+	}
+
+	public async readPhotoContent(photoPath: string): Promise<Uint8Array> {
+		return fs.readFile(photoPath)
+	}
+
+	/**
+	 * Persist the in-memory cache to disk. Call this after builds or periodically during dev.
+	 */
+	public async savePersistentCache(): Promise<void> {
+		if (!this.persistentCacheDirty) {
+			return
+		}
+
+		const cache: PersistentCache = {}
+		for (const [identifier, result] of this.resolvedCache.entries()) {
+			cache[identifier] = { result }
+		}
+
+		await fs.writeFile(this.cacheFilePath, JSON.stringify(cache, undefined, 2))
+		this.persistentCacheDirty = false
+
+		if (this.pluginOptions.verbose) {
+			console.log(`Aphex saved ${this.resolvedCache.size} entries to persistent cache`)
+		}
+	}
+
+	private async doExport(identifier: string): Promise<AphexImageResultMetadata | string> {
 		const startTime = performance.now()
 
 		const cleanIdentifier = identifier.replace(/^~(?:photos|aphex)\/+/, '')
@@ -63,10 +218,6 @@ export class AphexExport {
 			this.pluginOptions.cacheDirectory,
 			this.aphexOptions,
 		)
-
-		// TODO verbose...
-		// console.log('----------------------------------')
-		// console.log(result)
 
 		if (this.pluginOptions.pruneCacheOnBuild) {
 			this.pathsSeen.add(result.path)
@@ -90,53 +241,31 @@ export class AphexExport {
 		return result.path
 	}
 
-	public getAllExportedPaths(): Set<string> {
-		return this.pathsSeen
-	}
-
-	public getAssetFileName(photoPath: string): string {
-		return path.basename(photoPath)
-	}
-
-	public async initialize(): Promise<void> {
-		if (this.pluginOptions.interactiveSession) {
-			console.log('Initializing Aphex interactive session...')
-			await interactiveSessionStart()
-		}
-
-		await fs.mkdir(this.pluginOptions.cacheDirectory, { recursive: true })
-
-		if (this.pluginOptions.verbose) {
-			console.log(`Aphex plugin initialized with cache at "${this.pluginOptions.cacheDirectory}"`)
+	private async fileExists(filePath: string): Promise<boolean> {
+		try {
+			await fs.access(filePath)
+			return true
+		} catch {
+			return false
 		}
 	}
 
-	public isIdentifier(identifier: unknown): boolean {
-		return typeof identifier === 'string' && this.identifierPattern.test(identifier)
-	}
+	private async loadPersistentCache(): Promise<void> {
+		try {
+			const cacheContent = await fs.readFile(this.cacheFilePath, 'utf8')
+			// eslint-disable-next-line ts/no-unsafe-type-assertion
+			const cache = JSON.parse(cacheContent) as PersistentCache
 
-	public async pruneCache(): Promise<void> {
-		if (this.pluginOptions.pruneCacheOnBuild) {
-			const destinationFiles = await fs.readdir(this.pluginOptions.cacheDirectory, {})
-			const fileNamesToKeep = new Set(
-				[...this.pathsSeen].map((filePath) => path.basename(filePath)),
-			)
-
-			for (const destinationFile of destinationFiles) {
-				if (!fileNamesToKeep.has(destinationFile)) {
-					if (this.pluginOptions.verbose) {
-						console.log(`Cleaning up unused Aphex image: ${destinationFile}`)
-					}
-					await fs.rm(path.join(this.pluginOptions.cacheDirectory, destinationFile))
-				}
+			for (const [identifier, entry] of Object.entries(cache)) {
+				this.resolvedCache.set(identifier, entry.result)
 			}
-		} else if (this.pluginOptions.verbose) {
-			console.log('Skipping cache pruning because pruneCacheOnBuild is disabled')
-		}
-	}
 
-	public async readPhotoContent(photoPath: string): Promise<Uint8Array> {
-		return fs.readFile(photoPath)
+			if (this.pluginOptions.verbose) {
+				console.log(`Aphex loaded ${this.resolvedCache.size} entries from persistent cache`)
+			}
+		} catch {
+			// Cache file doesn't exist or is invalid, start fresh
+		}
 	}
 }
 

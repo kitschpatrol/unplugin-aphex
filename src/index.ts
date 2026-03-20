@@ -21,13 +21,16 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
 			await aphexExport.close()
 		},
 		enforce: 'pre',
-		load(id) {
-			if (id.startsWith(VIRTUAL_PREFIX)) {
+		load: {
+			filter: {
+				id: new RegExp(`^${VIRTUAL_PREFIX}`),
+			},
+			handler(id) {
 				const json = metadataById.get(id)
 				if (json !== undefined) {
 					return `export default ${json}`
 				}
-			}
+			},
 		},
 		name: 'unplugin-aphex',
 		resolveId: {

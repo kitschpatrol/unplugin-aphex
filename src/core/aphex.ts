@@ -246,7 +246,7 @@ export class AphexExport {
 
 		if (this.pluginOptions.returnMetadata) {
 			return {
-				format: path.extname(result.path).toLowerCase(),
+				format: path.extname(result.path).toLowerCase().slice(1),
 				height: result.photoInfo.edited?.height ?? result.photoInfo.original.height,
 				src: result.path,
 				width: result.photoInfo.edited?.width ?? result.photoInfo.original.width,

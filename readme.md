@@ -133,7 +133,7 @@ export default {
 <summary>Rspack</summary><br>
 
 ```ts
-// Rspack.config.js
+// Your rspack.config.js
 import Aphex from '@kitschpatrol/unplugin-aphex/rspack'
 
 export default {
@@ -148,7 +148,7 @@ export default {
 <summary>Farm</summary><br>
 
 ```ts
-// farm.config.js
+// Your farm.config.js
 import Aphex from '@kitschpatrol/unplugin-aphex/farm'
 
 export default {

@@ -6,6 +6,7 @@ it('works via the api ', async () => {
 	const cacheDirectory = './node_modules/.cache/aphex-node-test'
 	const identifier = '~aphex/Tiny/tiny'
 	const aphex = new AphexExport({ cacheDirectory, verbose: true })
+	await aphex.initialize()
 	expect(aphex.isIdentifier(identifier)).toBe(true)
 	expect(aphex.isIdentifier('not-an-aphex-identifier')).toBe(false)
 	const exportedPath = await aphex.exportPhoto(identifier)

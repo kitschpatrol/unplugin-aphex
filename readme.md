@@ -143,6 +143,20 @@ export default {
 
 <br></details>
 
+<details>
+<summary>Farm</summary><br>
+
+```ts
+// farm.config.js
+import Aphex from '@kitschpatrol/unplugin-aphex/farm'
+
+export default {
+  plugins: [Aphex()],
+}
+```
+
+<br></details>
+
 ### 3. Configure TypeScript (Optional)
 
 _Skip this step if you're using plain JavaScript._

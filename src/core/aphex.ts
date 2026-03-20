@@ -31,7 +31,7 @@ const CACHE_FILE_NAME = '.aphex-plugin-cache.json'
 
 export class AphexExport {
 	public get identifierPattern(): RegExp {
-		return /^~(?:photos|aphex)\/.+/
+		return /^~aphex\/.+/
 	}
 
 	private readonly aphexOptions: ResolvedAphexOptions
@@ -221,7 +221,7 @@ export class AphexExport {
 	private async doExport(identifier: string): Promise<AphexImageResultMetadata | string> {
 		this.startTimesByIdentifier.set(identifier, performance.now())
 
-		const cleanIdentifier = identifier.replace(/^~(?:photos|aphex)\/+/, '')
+		const cleanIdentifier = identifier.replace(/^~aphex\/+/, '')
 
 		const result = await exportPhoto(
 			cleanIdentifier,

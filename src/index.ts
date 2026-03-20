@@ -3,8 +3,11 @@ import { createUnplugin } from 'unplugin'
 import type { Options } from './core/options'
 import { AphexExport } from './core/aphex'
 
+const VIRTUAL_PREFIX = '\0aphex:'
+
 export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) => {
 	const aphexExport = new AphexExport(options)
+	const metadataById = new Map<string, string>()
 
 	return {
 		async buildEnd() {
@@ -18,6 +21,14 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
 			await aphexExport.close()
 		},
 		enforce: 'pre',
+		load(id) {
+			if (id.startsWith(VIRTUAL_PREFIX)) {
+				const json = metadataById.get(id)
+				if (json !== undefined) {
+					return `export default ${json}`
+				}
+			}
+		},
 		name: 'unplugin-aphex',
 		resolveId: {
 			filter: {
@@ -25,7 +36,13 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
 			},
 			async handler(id) {
 				const result = await aphexExport.exportPhoto(id)
-				return typeof result === 'string' ? result : JSON.stringify(result)
+				if (typeof result === 'string') {
+					return result
+				}
+
+				const virtualId = `${VIRTUAL_PREFIX}${id}`
+				metadataById.set(virtualId, JSON.stringify(result))
+				return virtualId
 			},
 		},
 		async writeBundle() {

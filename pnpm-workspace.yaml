@@ -1,11 +1,9 @@
-packages:
-  - playground
-
 onlyBuiltDependencies:
+  - core-js
   - esbuild
   - unrs-resolver
-
-# Required by @kitschpatrol/shared-config
+packages:
+  - playground
 publicHoistPattern:
   - '@kitschpatrol/repo-config'
   - '@kitschpatrol/typescript-config'

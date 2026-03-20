@@ -18,9 +18,6 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
 			await aphexExport.close()
 		},
 		enforce: 'pre',
-		loadInclude(id) {
-			return aphexExport.isIdentifier(id)
-		},
 		name: 'unplugin-aphex',
 		resolveId: {
 			filter: {

@@ -28,6 +28,12 @@ export type Options = {
 	 */
 	interactiveSession?: boolean
 	/**
+	 * Maximum number of concurrent image exports.
+	 * Lower values reduce load on Photos.app and system resources.
+	 * @default 4
+	 */
+	maxConcurrentExports?: number
+	/**
 	 * Additional image processing options. (Resizing, color profile enforcement, etc.)
 	 * Sensible defaults provided if undefined.
 	 */
@@ -49,12 +55,6 @@ export type Options = {
 	 * @default false
 	 */
 	validateMetadata?: boolean
-	/**
-	 * Maximum number of concurrent image exports.
-	 * Lower values reduce load on Photos.app and system resources.
-	 * @default 4
-	 */
-	maxConcurrentExports?: number
 	/**
 	 * Log actions and performance information to the console.
 	 * @default false
@@ -90,7 +90,7 @@ export const DEFAULT_OPTIONS: ResolvedOptions = {
 	pruneCacheOnBuild: false,
 	returnMetadata: false,
 	validateMetadata: false,
-	verbose: true,
+	verbose: false,
 }
 
 /**

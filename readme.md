@@ -41,7 +41,7 @@ This project is open-sourced as a curiosity and for my own convenience, but I su
 
 ### Dependencies
 
-Requires macOS with Photos.app installed and [Node 20.19.0](https://nodejs.org/en/download/) or newer. Currently, only an `arm64` (Apple Silicon) build of the requisite native binary is provided by the bundled Aphex library.
+Requires macOS with Photos.app installed and [Node 22.16.0](https://nodejs.org/en/download/) or newer. Currently, only an `arm64` (Apple Silicon) build of the requisite native binary is provided by the bundled Aphex library.
 
 Full image processing functionality also requires a number of image-related dependencies available via [Homebrew](https://brew.sh). (Enumerated below.)
 

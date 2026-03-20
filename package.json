@@ -83,8 +83,6 @@
 	"devDependencies": {
 		"@farmfe/core": ">=1.7.11",
 		"@kitschpatrol/shared-config": "^6.0.3",
-		"@nuxt/kit": "^3.21.2",
-		"@nuxt/schema": "^3.21.2",
 		"@sxzz/test-utils": "^0.5.15",
 		"@vitest/browser-playwright": "^4.1.0",
 		"bumpp": "^11.0.1",
@@ -93,14 +91,12 @@
 		"rollup": "^3.30.0",
 		"tsdown": "^0.21.4",
 		"typescript": "~5.9.3",
-		"vite": ">=8.0.1",
+		"vite": "^7.3.1",
 		"vitest": "^4.1.0",
 		"webpack": "^5.105.4"
 	},
 	"peerDependencies": {
 		"@farmfe/core": ">=1",
-		"@nuxt/kit": "^3",
-		"@nuxt/schema": "^3",
 		"esbuild": "*",
 		"rollup": "^3",
 		"vite": ">=3",

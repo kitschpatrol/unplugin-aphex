@@ -50,6 +50,12 @@ export type Options = {
 	 */
 	validateMetadata?: boolean
 	/**
+	 * Maximum number of concurrent image exports.
+	 * Lower values reduce load on Photos.app and system resources.
+	 * @default 4
+	 */
+	maxConcurrentExports?: number
+	/**
 	 * Log actions and performance information to the console.
 	 * @default false
 	 */
@@ -79,6 +85,7 @@ export const DEFAULT_OPTIONS: ResolvedOptions = {
 		fileNameAppendUuidFragment: true,
 	},
 	interactiveSession: false,
+	maxConcurrentExports: 4,
 	processOptions: undefined,
 	pruneCacheOnBuild: false,
 	returnMetadata: false,

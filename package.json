@@ -74,6 +74,7 @@
 		"@types/node": "~22.19.3",
 		"defu": "^6.1.4",
 		"lognow": "^0.4.1",
+		"p-limit": "^7.2.0",
 		"unplugin": "^2.3.11",
 		"unplugin-utils": "^0.3.1"
 	},

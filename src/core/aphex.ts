@@ -10,6 +10,7 @@ import {
 import { getChildLogger, log, setDefaultLogOptions } from 'lognow'
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import pLimit from 'p-limit'
 import type { Options, ResolvedOptions as ResolvedPluginOptions } from './options'
 import { resolveOptions } from './options'
 
@@ -35,6 +36,9 @@ export class AphexExport {
 
 	private readonly aphexOptions: ResolvedAphexOptions
 
+	// Concurrency limiter for exports
+	private readonly exportLimit: ReturnType<typeof pLimit>
+
 	// Just for cleanup, aphex does its own cache monitoring / difference detection
 	private readonly pathsSeen: Set<string> = new Set<string>()
 
@@ -58,6 +62,7 @@ export class AphexExport {
 
 	constructor(options?: Options) {
 		this.pluginOptions = resolveOptions(options)
+		this.exportLimit = pLimit(this.pluginOptions.maxConcurrentExports)
 
 		this.aphexOptions = mergeDefaultExportOptions({
 			exportOptions: this.pluginOptions.exportOptions ?? undefined,
@@ -124,7 +129,8 @@ export class AphexExport {
 		}
 
 		// Create the export promise and store it for deduplication
-		const exportPromise = this.doExport(identifier)
+		// Wrap with limiter to throttle concurrent exports
+		const exportPromise = this.exportLimit(async () => this.doExport(identifier))
 		this.pendingRequests.set(identifier, exportPromise)
 
 		try {

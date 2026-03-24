@@ -1,7 +1,9 @@
-import type { ExportOptions as ResolvedAphexOptions } from '@kitschpatrol/aphex'
+import type { ImageMimeType, ExportOptions as ResolvedAphexOptions } from '@kitschpatrol/aphex'
 import {
 	endExiftool,
 	exportPhoto,
+	// Unused
+	// IMAGE_MIME_TYPES,
 	interactiveSessionStart,
 	interactiveSessionStop,
 	mergeDefaultExportOptions,
@@ -15,7 +17,7 @@ import type { Options, ResolvedOptions as ResolvedPluginOptions } from './option
 import { resolveOptions } from './options'
 
 export type AphexImageResultMetadata = {
-	format: string
+	format: ImageMimeType
 	height: number
 	src: string
 	width: number
@@ -246,7 +248,9 @@ export class AphexExport {
 
 		if (this.pluginOptions.returnMetadata) {
 			return {
-				format: path.extname(result.path).toLowerCase().slice(1),
+				// TODO fish format out of deeper Aphex results instead? More robust?
+				// eslint-disable-next-line ts/no-unsafe-type-assertion
+				format: path.extname(result.path).toLowerCase().slice(1) as ImageMimeType,
 				height: result.photoInfo.edited?.height ?? result.photoInfo.original.height,
 				src: result.path,
 				width: result.photoInfo.edited?.width ?? result.photoInfo.original.width,

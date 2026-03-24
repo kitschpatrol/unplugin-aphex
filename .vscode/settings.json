@@ -14,6 +14,7 @@
 	"[svelte]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
+	"aphex-preview.manifestPath": "playground/node_modules/.cache/aphex/.aphex-plugin-cache.json",
 	"cSpell.enabled": true,
 	"cSpell.workspaceRootPath": ".",
 	"editor.codeActionsOnSave": {

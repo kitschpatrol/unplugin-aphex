@@ -40,7 +40,7 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
 			async handler(id) {
 				const result = await aphexExport.exportPhoto(id)
 				if (typeof result === 'string') {
-					return result
+					return aphexExport.resolveFromCache(result)
 				}
 
 				const virtualId = `${VIRTUAL_PREFIX}${id}`

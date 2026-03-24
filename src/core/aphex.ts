@@ -157,6 +157,10 @@ export class AphexExport {
 		return path.basename(photoPath)
 	}
 
+	public resolveFromCache(relativePath: string): string {
+		return path.resolve(this.pluginOptions.cacheDirectory, relativePath)
+	}
+
 	public async initialize(): Promise<void> {
 		if (this.pluginOptions.interactiveSession) {
 			log.debug('Initializing interactive session...')
@@ -246,18 +250,20 @@ export class AphexExport {
 			log.debug(`Resolved "${identifier}" to "${result.path}" in ${duration}s`)
 		}
 
+		const relativePath = path.relative(this.pluginOptions.cacheDirectory, result.path)
+
 		if (this.pluginOptions.returnMetadata) {
 			return {
 				// TODO fish format out of deeper Aphex results instead? More robust?
 				// eslint-disable-next-line ts/no-unsafe-type-assertion
 				format: path.extname(result.path).toLowerCase().slice(1) as ImageMimeType,
 				height: result.photoInfo.edited?.height ?? result.photoInfo.original.height,
-				src: result.path,
+				src: relativePath,
 				width: result.photoInfo.edited?.width ?? result.photoInfo.original.width,
 			}
 		}
 
-		return result.path
+		return relativePath
 	}
 
 	private async fileExists(filePath: string): Promise<boolean> {

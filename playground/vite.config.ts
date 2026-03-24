@@ -10,7 +10,7 @@ export default defineConfig({
 		Mkcert(),
 		Inspect(),
 		Aphex({
-			cacheMode: 'enabled',
+			cacheMode: 'aggressive',
 			interactiveSession: false,
 			pruneCacheOnBuild: true,
 			verbose: true,

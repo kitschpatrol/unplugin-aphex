@@ -16,7 +16,6 @@ export default eslintConfig(
 			overrides: {
 				// TODO decide on a prefix...
 				'import/no-unresolved': ['error', { ignore: ['^~aphex/', 'esbuild'] }],
-				'jsdoc/require-description': 'off',
 				'jsdoc/require-jsdoc': 'off',
 				'new-cap': 'off',
 			},
@@ -27,9 +26,7 @@ export default eslintConfig(
 		files: ['playground/package.json'],
 		rules: {
 			'json-package/require-author': 'off',
-			'json-package/require-description': 'off',
 			'json-package/require-keywords': 'off',
-			'json-package/require-name': 'off',
 			'json-package/require-version': 'off',
 		},
 	},

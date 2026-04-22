@@ -11,7 +11,7 @@ import { unpluginFactory } from './index'
  * @example
  * ```ts
  * // vite.config.ts
- * import Plugin from 'unplugin-aphex/vite'
+ * import Plugin from '@kitschpatrol/unplugin-aphex/vite'
  *
  * export default defineConfig({
  *   plugins: [Plugin()],

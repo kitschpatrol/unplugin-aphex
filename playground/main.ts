@@ -5,7 +5,7 @@ document.body.append(document.createElement('hr'))
 // -----------------------------------------------
 
 // Support for static imports
-import imageStatic from '~aphex/Projects/LP/ABB - Client Centers/Product/ar-render-detail'
+import imageStatic from '~aphex/test-album/lab-4'
 import imageStatic2 from '~aphex/Tiny/tiny'
 // import imageStatic3 from '~aphex/Tiny/tiny'
 

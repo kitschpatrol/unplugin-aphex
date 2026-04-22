@@ -11,7 +11,7 @@ import { unpluginFactory } from './index'
  * @example
  * ```ts
  * // farm.config.js
- * import Plugin from 'unplugin-aphex/farm'
+ * import Plugin from '@kitschpatrol/unplugin-aphex/farm'
  *
  * export default {
  *   plugins: [Plugin()],

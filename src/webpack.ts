@@ -13,7 +13,7 @@ import { unpluginFactory } from './index'
  * @example
  * ```js
  * // webpack.config.js
- * import Plugin from 'unplugin-aphex/webpack'
+ * import Plugin from '@kitschpatrol/unplugin-aphex/webpack'
  *
  * export default {
  *   plugins: [Plugin()],

@@ -11,7 +11,7 @@ export type Options = {
 	cacheDirectory?: string
 	/**
 	 * Cache mode to use for the plugin.
-	 * - 'disabled': Never cache any images. Force image re-export even if there's an existing image in the `cacheDirectory` appears unchanged from the source in Photos.app. This will be slow!
+	 * - 'disabled': Never cache any images. Force image re-export even if an existing image in the `cacheDirectory` appears unchanged from the source in Photos.app. This will be slow!
 	 * - 'enabled': Use the cached image, but check for changes in Photos.app.
 	 * - 'aggressive': Use the first cached image forever (Fastest, may be outdated, suitable for development.)
 	 * @default 'enabled'

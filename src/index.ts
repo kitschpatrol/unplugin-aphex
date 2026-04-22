@@ -49,8 +49,8 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
 			},
 		},
 		async writeBundle() {
-			// On "build" only...
-			// TODO a problem for middleware?
+			// Only fires on "build", not in dev/middleware modes.
+			// TODO is this a problem for middleware?
 			await aphexExport.pruneCache()
 		},
 	}

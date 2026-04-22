@@ -62,38 +62,38 @@
 	],
 	"scripts": {
 		"build": "tsdown",
-		"clean": "git rm -f pnpm-lock.yaml ; git clean -fdX",
+		"clean": "git rm -f pnpm-lock.yaml && git clean -fdX -e !.claude/",
 		"dev": "tsdown --watch",
 		"fix": "ksc fix",
 		"lint": "ksc lint",
-		"play": "poptab ; pnpm -C playground run dev",
-		"release": "bumpp --commit 'Release: %s' && pnpm run build && NPM_AUTH_TOKEN=$(op read 'op://Personal/npm/token') && pnpm publish",
+		"play": "poptab && pnpm -C playground run dev",
+		"release": "bumpp --commit 'Release: %s' && pnpm build && NPM_AUTH_TOKEN=$(op read 'op://Personal/npm/token') && pnpm publish",
 		"test": "vitest run"
 	},
 	"dependencies": {
 		"@kitschpatrol/aphex": "file:../aphex",
-		"@types/node": "~22.19.15",
-		"defu": "^6.1.4",
-		"lognow": "^0.5.2",
+		"@types/node": "~22.18.13",
+		"defu": "^6.1.7",
+		"lognow": "^0.6.1",
 		"p-limit": "^7.3.0",
-		"type-fest": "^5.5.0",
+		"type-fest": "^5.6.0",
 		"unplugin": "^3.0.0",
 		"unplugin-utils": "^0.3.1"
 	},
 	"devDependencies": {
 		"@farmfe/core": ">=1.7.11",
-		"@kitschpatrol/shared-config": "^6.1.0",
-		"@sxzz/test-utils": "^0.5.15",
-		"@vitest/browser-playwright": "^4.1.1",
+		"@kitschpatrol/shared-config": "^7.5.0",
+		"@sxzz/test-utils": "^0.5.16",
+		"@vitest/browser-playwright": "^4.1.5",
 		"bumpp": "^11.0.1",
 		"esbuild": "*",
-		"poptab": "^1.0.4",
-		"rollup": "^4.60.0",
-		"tsdown": "^0.21.4",
+		"poptab": "^1.1.0",
+		"rollup": "^4.60.2",
+		"tsdown": "^0.21.10",
 		"typescript": "~5.9.3",
-		"vite": "^7.3.1",
-		"vitest": "^4.1.1",
-		"webpack": "^5.105.4"
+		"vite": "^7.3.2",
+		"vitest": "^4.1.5",
+		"webpack": "^5.106.2"
 	},
 	"peerDependencies": {
 		"@farmfe/core": ">=1",
@@ -125,9 +125,9 @@
 			"optional": true
 		}
 	},
-	"packageManager": "pnpm@10.33.0",
+	"packageManager": "pnpm@10.33.1",
 	"engines": {
-		"node": ">=22.16.0"
+		"node": ">=22.18.0"
 	},
 	"os": [
 		"darwin"

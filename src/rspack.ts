@@ -11,7 +11,7 @@ import { unpluginFactory } from './index'
  * @example
  * ```js
  * // rspack.config.js
- * import Plugin from 'unplugin-aphex/rspack'
+ * import Plugin from '@kitschpatrol/unplugin-aphex/rspack'
  *
  * export default {
  *   plugins: [Plugin()],

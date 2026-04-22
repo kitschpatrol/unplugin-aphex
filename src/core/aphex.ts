@@ -30,10 +30,12 @@ type PersistentCacheEntry = {
 type PersistentCache = Record<string, PersistentCacheEntry>
 
 const CACHE_FILE_NAME = '.aphex-plugin-cache.json'
+const IDENTIFIER_REGEX = /^~aphex\/.+/
+const CLEAN_IDENTIFIER_REGEX = /^~aphex\/+/
 
 export class AphexExport {
 	public get identifierPattern(): RegExp {
-		return /^~aphex\/.+/
+		return IDENTIFIER_REGEX
 	}
 
 	private readonly aphexOptions: ResolvedAphexOptions
@@ -72,10 +74,10 @@ export class AphexExport {
 		})
 
 		// Apply proxied options...
-		assertEnabled(this.aphexOptions.metadataOptions)
+		assertEnabled(this.aphexOptions.metadataOptions, 'metadataOptions')
 		this.aphexOptions.metadataOptions.validate = this.pluginOptions.validateMetadata
 
-		assertEnabled(this.aphexOptions.syncOptions)
+		assertEnabled(this.aphexOptions.syncOptions, 'syncOptions')
 		this.aphexOptions.syncOptions.deleteOthers = false // Always disable, dangerous
 		this.aphexOptions.syncOptions.forceUpdate = this.pluginOptions.cacheMode === 'disabled'
 
@@ -107,11 +109,12 @@ export class AphexExport {
 			const cached = this.resolvedCache.get(identifier)
 			if (cached !== undefined) {
 				const cachedPath = typeof cached === 'string' ? cached : cached.src
-				if (await this.fileExists(cachedPath)) {
+				const absoluteCachedPath = this.resolveFromCache(cachedPath)
+				if (await this.fileExists(absoluteCachedPath)) {
 					log.debug(`Cache hit for "${identifier}"`)
 
 					if (this.pluginOptions.pruneCacheOnBuild) {
-						this.pathsSeen.add(cachedPath)
+						this.pathsSeen.add(absoluteCachedPath)
 					}
 
 					return cached
@@ -157,10 +160,6 @@ export class AphexExport {
 		return path.basename(photoPath)
 	}
 
-	public resolveFromCache(relativePath: string): string {
-		return path.resolve(this.pluginOptions.cacheDirectory, relativePath)
-	}
-
 	public async initialize(): Promise<void> {
 		if (this.pluginOptions.interactiveSession) {
 			log.debug('Initializing interactive session...')
@@ -182,7 +181,7 @@ export class AphexExport {
 		if (this.pluginOptions.pruneCacheOnBuild) {
 			const destinationFiles = await fs.readdir(this.pluginOptions.cacheDirectory, {})
 			const fileNamesToKeep = new Set(
-				[...this.pathsSeen].map((filePath) => path.basename(filePath)),
+				Array.from(this.pathsSeen, (filePath) => path.basename(filePath)),
 			)
 
 			for (const destinationFile of destinationFiles) {
@@ -205,8 +204,13 @@ export class AphexExport {
 		return fs.readFile(photoPath)
 	}
 
+	public resolveFromCache(relativePath: string): string {
+		return path.resolve(this.pluginOptions.cacheDirectory, relativePath)
+	}
+
 	/**
-	 * Persist the in-memory cache to disk. Call this after builds or periodically during dev.
+	 * Persist the in-memory cache to disk. Call this after builds or periodically
+	 * during dev.
 	 */
 	public async savePersistentCache(): Promise<void> {
 		if (!this.persistentCacheDirty) {
@@ -227,7 +231,7 @@ export class AphexExport {
 	private async doExport(identifier: string): Promise<AphexImageResultMetadata | string> {
 		this.startTimesByIdentifier.set(identifier, performance.now())
 
-		const cleanIdentifier = identifier.replace(/^~aphex\/+/, '')
+		const cleanIdentifier = identifier.replace(CLEAN_IDENTIFIER_REGEX, '')
 
 		const result = await exportPhoto(
 			cleanIdentifier,
@@ -242,13 +246,15 @@ export class AphexExport {
 		if (this.pluginOptions.verbose) {
 			const startTime = this.startTimesByIdentifier.get(identifier)
 			if (startTime === undefined) {
-				throw new Error(`Start time not found for identifier "${identifier}"`)
+				log.debug(`Resolved "${identifier}" to "${result.path}" (timing unavailable)`)
+			} else {
+				const endTime = performance.now()
+				const duration = ((endTime - startTime) / 1000).toFixed(2)
+				log.debug(`Resolved "${identifier}" to "${result.path}" in ${duration}s`)
 			}
-
-			const endTime = performance.now()
-			const duration = ((endTime - startTime) / 1000).toFixed(2)
-			log.debug(`Resolved "${identifier}" to "${result.path}" in ${duration}s`)
 		}
+
+		this.startTimesByIdentifier.delete(identifier)
 
 		const relativePath = path.relative(this.pluginOptions.cacheDirectory, result.path)
 
@@ -288,7 +294,7 @@ export class AphexExport {
 				const cachedPath = typeof entry.result === 'string' ? entry.result : entry.result.src
 
 				// Only load entries whose files actually exist on disk
-				if (await this.fileExists(cachedPath)) {
+				if (await this.fileExists(this.resolveFromCache(cachedPath))) {
 					this.resolvedCache.set(identifier, entry.result)
 					validEntries++
 				} else {
@@ -311,8 +317,10 @@ export class AphexExport {
 	}
 }
 
-function assertEnabled<T>(option: T): asserts option is Exclude<T, 'disabled'> {
+function assertEnabled<T>(option: T, optionName: string): asserts option is Exclude<T, 'disabled'> {
 	if (option === 'disabled') {
-		throw new Error('Bad Aphex default: disabled')
+		throw new Error(
+			`unplugin-aphex requires \`${optionName}\` to be enabled; set \`exportOptions.${optionName}\` to a configuration object instead of 'disabled'.`,
+		)
 	}
 }

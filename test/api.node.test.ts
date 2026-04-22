@@ -65,8 +65,8 @@ describe('exportPhoto', () => {
 		await aphex.initialize()
 		const result = await aphex.exportPhoto(identifier)
 		expect(typeof result).toBe('string')
-		expect(result).toContain('node_modules/.cache/aphex-test-export/tiny')
-	})
+		expect(result).toMatch(/^tiny-[\da-f]+\.png$/)
+	}, 15_000)
 
 	it('returns metadata object when returnMetadata is true', async () => {
 		const aphex = createAphex({
@@ -80,7 +80,7 @@ describe('exportPhoto', () => {
 			{
 			  "format": "png",
 			  "height": 1080,
-			  "src": "node_modules/.cache/aphex-test-metadata/tiny-294e4ad3.png",
+			  "src": "tiny-294e4ad3.png",
 			  "width": 1620,
 			}
 		`)
@@ -187,7 +187,7 @@ describe('persistent cache', () => {
 
 		// Delete the exported file but keep the cache json
 		const exportedPath = typeof result === 'string' ? result : result.src
-		fs.rmSync(exportedPath)
+		fs.rmSync(path.join(cacheDirectory, exportedPath))
 
 		// New instance should detect stale entry
 		const aphex2 = createAphex({

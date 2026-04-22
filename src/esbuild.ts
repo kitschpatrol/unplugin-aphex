@@ -13,9 +13,9 @@ import { unpluginFactory } from './index'
  * @example
  * ```ts
  * import { build } from 'esbuild'
- * import Plugin from 'unplugin-aphex/esbuild'
- * 
+ * import Plugin from '@kitschpatrol/unplugin-aphex/esbuild'
+ *
  * build({ plugins: [Plugin()] })
-```
+ * ```
  */
 export default createEsbuildPlugin(unpluginFactory)

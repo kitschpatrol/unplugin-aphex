@@ -11,7 +11,7 @@ import { unpluginFactory } from './index'
  * @example
  * ```ts
  * // rollup.config.js
- * import Plugin from 'unplugin-aphex/rollup'
+ * import Plugin from '@kitschpatrol/unplugin-aphex/rollup'
  *
  * export default {
  *   plugins: [Plugin()],

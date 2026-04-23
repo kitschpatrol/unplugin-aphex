@@ -19,7 +19,7 @@
 
 > [!WARNING]
 >
-> **This plugins's underlying [Apple Photos Export (Aphex) library](https://github.com/kitschpatrol/aphex) is still under development. The library, and this plugin, should not be considered suitable for general use until a 1.0 release.**
+> **This plugin's underlying [Apple Photos Export (Aphex) library](https://github.com/kitschpatrol/aphex) is still under development. The library, and this plugin, should not be considered suitable for general use until a 1.0 release.**
 >
 > This project is open-sourced as a curiosity and for my own convenience, but I suspect it's too niche to be of wide interest or utility. I don't currently plan to spend time adding features for more general use-cases.
 >
@@ -29,7 +29,7 @@
 
 ## Overview
 
-This project wraps the [Aphex](https://github.com/kitschpatrol/aphex) Apple Photos Export library in a unified [unplugin](https://unplugin.unjs.io/) for integration with a range of bundlers and build pipelines. (Vite, Rollup, etc.)
+This project wraps the [Aphex](https://github.com/kitschpatrol/aphex) Apple Photos Export library in a unified [unplugin](https://unplugin.unjs.io/) for integration with a range of bundlers and build pipelines (Vite, Rollup, etc.).
 
 Aphex treats your Apple Photos.app library as a virtual file system, allowing you to import specific images by their album name / path from your JavaScript / TypeScript code via the `~aphex/` module prefix:
 
@@ -42,7 +42,7 @@ console.log(photo) // '/@fs/node_modules/.cache/aphex/img_1922-a1b2c3d4.jpeg'
 
 Running against a cold cache can be _extremely_ slow and can require foreground UI focus, because certain image export strategies have to manipulate the Photos.app GUI directly. (This is for [regrettable but valid reasons](https://github.com/RhetTbull/osxphotos/discussions/1522).)
 
-This readme only covers the basics of using the build plugin, please see the [Aphex project readme](https://github.com/kitschpatrol/aphex) for more details on the underlying functionality and export options.
+This readme only covers the basics of using the build plugin; please see the [Aphex project readme](https://github.com/kitschpatrol/aphex) for more details on the underlying functionality and export options.
 
 ## Getting started
 
@@ -179,7 +179,7 @@ Add the extension declarations to your [types](https://www.typescriptlang.org/ts
 }
 ```
 
-Alternately, you can add a triple-slash package dependency directive to your global types file (e.g. `env.d.ts` or similar):
+Alternatively, you can add a triple-slash package dependency directive to your global types file (e.g. `env.d.ts` or similar):
 
 ```ts
 /// <reference types="@kitschpatrol/unplugin-aphex/client" />
@@ -229,7 +229,7 @@ This repository uses [@kitschpatrol/shared-config](https://github.com/kitschpatr
 
 This is an unofficial library and is not affiliated with or blessed by Apple Inc.
 
-The underlying library's core export commands maintain a "read only" relationship with your library.
+The underlying library's core export commands maintain a "read-only" relationship with your library.
 
 None of the code paths should modify the contents of your Photos.app library. But regardless, strange things can happen — please back up your Photos.app library before using this tool.
 

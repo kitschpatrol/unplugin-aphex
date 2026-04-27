@@ -203,6 +203,16 @@ If you use the [eslint-plugin-import-x](https://github.com/un-ts/eslint-plugin-i
 }
 ```
 
+#### 5. Install VS Code preview extension (Optional)
+
+If you're using VS Code, an [extension](https://github.com/kitschpatrol/vscode-aphex-preview) is available to provide hover-previews for Aphex file paths:
+
+Install the extension from the [Marketplace](https://marketplace.visualstudio.com/items?itemName=kitschpatrol.aphex-preview), or run the following in VS Code's command palette:
+
+```sh
+ext install kitschpatrol.aphex-preview
+```
+
 ## Usage
 
 Any module imports prefixed with `~aphex/` will be exported from Photos.app, processed, and cached to a project-local directory. The string path to the exported image is returned from the import statement.

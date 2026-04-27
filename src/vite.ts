@@ -1,5 +1,6 @@
 /**
  * This entry file is for Vite plugin.
+ *
  * @module
  */
 
@@ -8,14 +9,13 @@ import { unpluginFactory } from './index'
 
 /**
  * Vite plugin
- * @example
- * ```ts
- * // vite.config.ts
- * import Plugin from '@kitschpatrol/unplugin-aphex/vite'
  *
- * export default defineConfig({
- *   plugins: [Plugin()],
- * })
- * ```
+ * @example
+ * 	// vite.config.ts
+ * 	import Plugin from '@kitschpatrol/unplugin-aphex/vite'
+ *
+ * 	export default defineConfig({
+ * 		plugins: [Plugin()],
+ * 	})
  */
 export default createVitePlugin(unpluginFactory)

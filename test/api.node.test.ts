@@ -65,6 +65,7 @@ describe('exportPhoto', () => {
 		await aphex.initialize()
 		const result = await aphex.exportPhoto(identifier)
 		expect(typeof result).toBe('string')
+		// eslint-disable-next-line e18e/prefer-static-regex
 		expect(result).toMatch(/^tiny-[\da-f]+\.png$/)
 	}, 15_000)
 

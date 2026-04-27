@@ -1,5 +1,6 @@
 /**
  * This entry file is for esbuild plugin.
+ *
  * @module
  */
 
@@ -9,13 +10,12 @@ import { unpluginFactory } from './index'
 // @case-police-ignore esbuild
 
 /**
- * esbuild plugin
- * @example
- * ```ts
- * import { build } from 'esbuild'
- * import Plugin from '@kitschpatrol/unplugin-aphex/esbuild'
+ * Esbuild plugin
  *
- * build({ plugins: [Plugin()] })
- * ```
+ * @example
+ * 	import { build } from 'esbuild'
+ * 	import Plugin from '@kitschpatrol/unplugin-aphex/esbuild'
+ *
+ * 	build({ plugins: [Plugin()] })
  */
 export default createEsbuildPlugin(unpluginFactory)

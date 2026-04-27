@@ -1,5 +1,6 @@
 /**
  * This entry file is for Rollup plugin.
+ *
  * @module
  */
 
@@ -8,14 +9,13 @@ import { unpluginFactory } from './index'
 
 /**
  * Rollup plugin
- * @example
- * ```ts
- * // rollup.config.js
- * import Plugin from '@kitschpatrol/unplugin-aphex/rollup'
  *
- * export default {
- *   plugins: [Plugin()],
- * }
- * ```
+ * @example
+ * 	// rollup.config.js
+ * 	import Plugin from '@kitschpatrol/unplugin-aphex/rollup'
+ *
+ * 	export default {
+ * 		plugins: [Plugin()],
+ * 	}
  */
 export default createRollupPlugin(unpluginFactory)

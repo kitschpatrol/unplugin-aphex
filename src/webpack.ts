@@ -1,5 +1,6 @@
 /**
  * This entry file is for webpack plugin.
+ *
  * @module
  */
 
@@ -10,14 +11,13 @@ import { unpluginFactory } from './index'
 
 /**
  * Webpack plugin
- * @example
- * ```js
- * // webpack.config.js
- * import Plugin from '@kitschpatrol/unplugin-aphex/webpack'
  *
- * export default {
- *   plugins: [Plugin()],
- * }
- * ```
+ * @example
+ * 	// webpack.config.js
+ * 	import Plugin from '@kitschpatrol/unplugin-aphex/webpack'
+ *
+ * 	export default {
+ * 		plugins: [Plugin()],
+ * 	}
  */
 export default createWebpackPlugin(unpluginFactory)

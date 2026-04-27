@@ -1,5 +1,6 @@
 /**
  * This entry file is for Rspack plugin.
+ *
  * @module
  */
 
@@ -8,14 +9,13 @@ import { unpluginFactory } from './index'
 
 /**
  * Rspack plugin
- * @example
- * ```js
- * // rspack.config.js
- * import Plugin from '@kitschpatrol/unplugin-aphex/rspack'
  *
- * export default {
- *   plugins: [Plugin()],
- * }
- * ```
+ * @example
+ * 	// rspack.config.js
+ * 	import Plugin from '@kitschpatrol/unplugin-aphex/rspack'
+ *
+ * 	export default {
+ * 		plugins: [Plugin()],
+ * 	}
  */
 export default createRspackPlugin(unpluginFactory)

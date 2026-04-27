@@ -2,8 +2,6 @@ import type { ImageMimeType, ExportOptions as ResolvedAphexOptions } from '@kits
 import {
 	endExiftool,
 	exportPhoto,
-	// Unused
-	// IMAGE_MIME_TYPES,
 	interactiveSessionStart,
 	interactiveSessionStop,
 	mergeDefaultExportOptions,
@@ -118,7 +116,6 @@ export class AphexExport {
 			log.debug('Closing session...')
 			await interactiveSessionStop()
 		} else {
-			// Log.debug('Cleaning up exiftool...')
 			await endExiftool()
 		}
 	}

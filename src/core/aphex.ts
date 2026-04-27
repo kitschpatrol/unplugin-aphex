@@ -175,16 +175,8 @@ export class AphexExport {
 		}
 	}
 
-	public getAllExportedPaths(): Set<string> {
-		return this.pathsSeen
-	}
-
 	public getCachedResult(identifier: string): AphexImageResultMetadata | string | undefined {
 		return this.resolvedCache.get(identifier)
-	}
-
-	public getAssetFileName(photoPath: string): string {
-		return path.basename(photoPath)
 	}
 
 	public async initialize(): Promise<void> {
@@ -225,10 +217,6 @@ export class AphexExport {
 		} else {
 			log.debug('Skipping cache pruning because pruneCacheOnBuild is disabled')
 		}
-	}
-
-	public async readPhotoContent(photoPath: string): Promise<Uint8Array> {
-		return fs.readFile(photoPath)
 	}
 
 	public resolveFromCache(relativePath: string): string {

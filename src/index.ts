@@ -32,6 +32,7 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
 						`unplugin-aphex: missing metadata for "${identifier}". This indicates the plugin's resolveId/load state was lost between hooks.`,
 					)
 				}
+
 				return `export default ${JSON.stringify(result)}`
 			},
 		},

@@ -172,10 +172,10 @@ export default {
 ```ts
 // Your nuxt.config.ts
 export default defineNuxtConfig({
-  modules: ['@kitschpatrol/unplugin-aphex/nuxt'],
   aphex: {
     // plugin options here
   },
+  modules: ['@kitschpatrol/unplugin-aphex/nuxt'],
 })
 ```
 

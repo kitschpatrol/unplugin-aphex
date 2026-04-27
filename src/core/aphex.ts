@@ -34,6 +34,7 @@ const IDENTIFIER_REGEX = /^~aphex\/.+/
 const CLEAN_IDENTIFIER_REGEX = /^~aphex\/+/
 
 export class AphexExport {
+	/** Regular expression matching the `~aphex/...` identifier prefix. */
 	public get identifierPattern(): RegExp {
 		return IDENTIFIER_REGEX
 	}
@@ -52,6 +53,10 @@ export class AphexExport {
 	// Dirty flag for batched cache writes
 	private persistentCacheDirty = false
 
+	// Whether the host can run the underlying Photos.app export pipeline.
+	// On unsupported platforms the plugin still serves pre-resolved cache entries.
+	private readonly platformSupported: boolean
+
 	private readonly pluginOptions: ResolvedPluginOptions
 
 	// Result cache: prevents re-processing already completed requests (in-memory + persisted)
@@ -59,10 +64,6 @@ export class AphexExport {
 
 	// In-flight request timing: tracks how long each request takes
 	private readonly startTimesByIdentifier = new Map<string, number>()
-
-	// Whether the host can run the underlying Photos.app export pipeline.
-	// On unsupported platforms the plugin still serves pre-resolved cache entries.
-	private readonly platformSupported: boolean
 
 	private get cacheFilePath(): string {
 		return path.join(this.pluginOptions.cacheDirectory, CACHE_FILE_NAME)
@@ -104,6 +105,10 @@ export class AphexExport {
 		}
 	}
 
+	/**
+	 * Tear down long-lived resources (interactive Photos.app session or
+	 * exiftool subprocess). Safe to call multiple times.
+	 */
 	public async close(): Promise<void> {
 		if (!this.platformSupported) {
 			return
@@ -118,6 +123,11 @@ export class AphexExport {
 		}
 	}
 
+	/**
+	 * Resolve a `~aphex/...` identifier to either a relative cache path or a
+	 * metadata object (per `returnMetadata`). Concurrent duplicate calls are
+	 * deduplicated; throughput is capped by `maxConcurrentExports`.
+	 */
 	public async exportPhoto(identifier: string): Promise<AphexImageResultMetadata | string> {
 		// On unsupported platforms we can't talk to Photos.app, so always try
 		// the cache first regardless of mode and refuse on a miss.
@@ -175,10 +185,19 @@ export class AphexExport {
 		}
 	}
 
+	/**
+	 * Look up an already-resolved result without triggering an export. Returns
+	 * `undefined` if the identifier hasn't been processed yet in this session.
+	 */
 	public getCachedResult(identifier: string): AphexImageResultMetadata | string | undefined {
 		return this.resolvedCache.get(identifier)
 	}
 
+	/**
+	 * Prepare the export pipeline: ensure the cache directory exists and load
+	 * any persisted cache entries from previous runs. Must be awaited before
+	 * the first `exportPhoto` call.
+	 */
 	public async initialize(): Promise<void> {
 		if (this.platformSupported && this.pluginOptions.interactiveSession) {
 			log.debug('Initializing interactive session...')
@@ -192,10 +211,17 @@ export class AphexExport {
 		log.debug(`Initialized with cache at "${this.pluginOptions.cacheDirectory}"`)
 	}
 
+	/** Type-narrowing check for whether a value is a `~aphex/...` identifier. */
 	public isIdentifier(identifier: unknown): boolean {
 		return typeof identifier === 'string' && this.identifierPattern.test(identifier)
 	}
 
+	/**
+	 * Delete files in the cache directory that weren't referenced this
+	 * session. No-op unless `pruneCacheOnBuild` is enabled. Should only be
+	 * called when `pathsSeen` is known to be complete (i.e. after a full
+	 * production build, not a dev session).
+	 */
 	public async pruneCache(): Promise<void> {
 		if (this.pluginOptions.pruneCacheOnBuild) {
 			const destinationFiles = await fs.readdir(this.pluginOptions.cacheDirectory, {})
@@ -219,6 +245,7 @@ export class AphexExport {
 		}
 	}
 
+	/** Resolve a cache-relative path to an absolute filesystem path. */
 	public resolveFromCache(relativePath: string): string {
 		return path.resolve(this.pluginOptions.cacheDirectory, relativePath)
 	}
@@ -275,15 +302,18 @@ export class AphexExport {
 
 		if (this.pluginOptions.returnMetadata) {
 			const processedOutput = result.results.processResult?.output
-			const format = processedOutput?.mime
+			const format =
+				processedOutput?.mime ??
 				// eslint-disable-next-line ts/no-unsafe-type-assertion
-				?? (path.extname(result.path).toLowerCase().slice(1) as ImageMimeType)
-			const height = processedOutput?.dimensionsPixels.height
-				?? result.photoInfo.edited?.height
-				?? result.photoInfo.original.height
-			const width = processedOutput?.dimensionsPixels.width
-				?? result.photoInfo.edited?.width
-				?? result.photoInfo.original.width
+				(path.extname(result.path).toLowerCase().slice(1) as ImageMimeType)
+			const height =
+				processedOutput?.dimensionsPixels.height ??
+				result.photoInfo.edited?.height ??
+				result.photoInfo.original.height
+			const width =
+				processedOutput?.dimensionsPixels.width ??
+				result.photoInfo.edited?.width ??
+				result.photoInfo.original.width
 
 			return {
 				format,
@@ -314,6 +344,7 @@ export class AphexExport {
 				// First run on this cache directory; nothing to load
 				return
 			}
+
 			log.warn(
 				`Failed to read persistent cache at "${this.cacheFilePath}", starting fresh: ${error instanceof Error ? error.message : String(error)}`,
 			)
@@ -350,9 +381,7 @@ export class AphexExport {
 		}
 
 		if (staleEntries > 0) {
-			log.debug(
-				`Removed ${staleEntries} stale entries from cache (files no longer exist on disk)`,
-			)
+			log.debug(`Removed ${staleEntries} stale entries from cache (files no longer exist on disk)`)
 		}
 
 		log.debug(`Registered ${validEntries} entries from persistent cache`)

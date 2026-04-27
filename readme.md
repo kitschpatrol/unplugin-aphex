@@ -23,7 +23,7 @@
 >
 > This project is open-sourced as a curiosity and for my own convenience, but I suspect it's too niche to be of wide interest or utility. I don't currently plan to spend time adding features for more general use-cases.
 >
-> It won't work in CI pipelines. It can only target the system's active Photos.app library. It requires an Apple Silicon (`arm64`) Mac. It has not been tested against iCloud Photos libraries, and assets kept only in the cloud (via "Optimize Mac Storage") are unlikely to export successfully.
+> It won't work in CI pipelines. It can only target the system's active Photos.app library. It requires an Apple Silicon Mac. It has not been tested against iCloud Photos libraries.
 >
 > If you are looking for a proper Apple Photos.app mass-export or backup solution, **I highly recommend using [osxphotos](https://github.com/RhetTbull/osxphotos) instead**.
 
@@ -50,7 +50,7 @@ This readme only covers the basics of using the build plugin; please see the [Ap
 
 Requires macOS with Photos.app installed and [Node 22.18.0](https://nodejs.org/en/download/) or newer. Currently, only an `arm64` (Apple Silicon) build of the requisite native binary is provided by the bundled Aphex library.
 
-Various image processing features (format conversion, resizing, compression, perceptual diffing, etc.) rely on external binaries installed via [Homebrew](https://brew.sh). See the [Aphex readme](https://github.com/kitschpatrol/aphex) for which tool powers which feature — the list below covers every binary any code path might invoke, and you can skip tools for formats or operations you don't use.
+Various image processing features (format conversion, resizing, compression, perceptual diffing, etc.) rely on external binaries installed via [Homebrew](https://brew.sh). See the [Aphex readme](https://github.com/kitschpatrol/aphex) for which tool powers which feature. The brew line below installs every optional binary the plugin might invoke; install only the ones you need for the formats and operations you actually use.
 
 ### Installation
 
@@ -71,6 +71,7 @@ npm i -D @kitschpatrol/unplugin-aphex
 ```ts
 // Your vite.config.ts
 import Aphex from '@kitschpatrol/unplugin-aphex/vite'
+import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [Aphex()],
@@ -165,9 +166,9 @@ export default {
 
 <br></details>
 
-#### 3. Configure TypeScript (Optional)
+#### 3. Configure TypeScript
 
-_Skip this step if you're using plain JavaScript._
+_Required for TypeScript projects. Skip this step if you're using plain JavaScript._
 
 Add the extension declarations to your [types](https://www.typescriptlang.org/tsconfig#types) in tsconfig.json:
 
@@ -193,12 +194,12 @@ Cannot find module '~aphex/some-album/some-photo' or its corresponding type decl
 
 #### 4. Notify ESLint (Optional)
 
-If you use the [eslint-plugin-import-x](https://github.com/un-ts/eslint-plugin-import-x) plugin or similar, you may need to whitelist the `~aphex/` module prefix in the [import-x/no-unresolved](https://github.com/un-ts/eslint-plugin-import-x/blob/v4.16.1/docs/rules/no-unresolved.md) rule in your ESLint config:
+If you use the [eslint-plugin-import-x](https://github.com/un-ts/eslint-plugin-import-x) plugin or similar, you may need to ignore the `~aphex/` module prefix in the [import-x/no-unresolved](https://github.com/un-ts/eslint-plugin-import-x/blob/v4.16.1/docs/rules/no-unresolved.md) rule in your ESLint config:
 
 ```json
 {
   "rules": {
-    "import/no-unresolved": ["error", { "ignore": ["^~aphex/"] }]
+    "import-x/no-unresolved": ["error", { "ignore": ["^~aphex/"] }]
   }
 }
 ```
@@ -215,9 +216,44 @@ ext install kitschpatrol.aphex-preview
 
 ## Usage
 
-Any module imports prefixed with `~aphex/` will be exported from Photos.app, processed, and cached to a project-local directory. The string path to the exported image is returned from the import statement.
+Any module imports prefixed with `~aphex/` will be exported from Photos.app, processed, and cached to a project-local directory. By default, the import resolves to a string path to the exported image.
 
-For now, the (many) plugin option arguments are documented via inline JSDoc comments.
+### Options
+
+| Option                 | Type                                      | Default                         | Description                                                                                                                                                                                                       |
+| ---------------------- | ----------------------------------------- | ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `cacheDirectory`       | `string`                                  | `'./node_modules/.cache/aphex'` | Where exported images are stored.                                                                                                                                                                                 |
+| `cacheMode`            | `'enabled' \| 'aggressive' \| 'disabled'` | `'enabled'`                     | `'enabled'` re-validates against Photos.app on each request, `'aggressive'` reuses the first cached image without re-checking (fastest, may go stale — good for dev), `'disabled'` forces a re-export every time. |
+| `exportOptions`        | Aphex `ExportOptions` (partial)           | _sensible defaults_             | Forwarded to the underlying Aphex export pipeline.                                                                                                                                                                |
+| `processOptions`       | Aphex `ProcessOptions` (partial)          | _sensible defaults_             | Resizing, color profile enforcement, etc. Forwarded to Aphex.                                                                                                                                                     |
+| `interactiveSession`   | `boolean`                                 | `false`                         | Experimental: keep a single `aphex-swift` session alive across requests for higher throughput.                                                                                                                    |
+| `maxConcurrentExports` | `number`                                  | `4`                             | Cap on parallel exports. Lower this if Photos.app or your system feels overloaded.                                                                                                                                |
+| `pruneCacheOnBuild`    | `boolean`                                 | `false`                         | Delete files in `cacheDirectory` that weren't referenced during a full build. Only runs in build mode, not in dev/middleware mode.                                                                                |
+| `returnMetadata`       | `boolean`                                 | `false`                         | Return a metadata object instead of a path string. See [Metadata mode](#metadata-mode) below.                                                                                                                     |
+| `validateMetadata`     | `boolean`                                 | `false`                         | Require certain (currently non-configurable) metadata fields to be present in the source files.                                                                                                                   |
+| `verbose`              | `boolean`                                 | `false`                         | Log per-export timing and cache decisions.                                                                                                                                                                        |
+
+### Metadata mode
+
+When `returnMetadata` is `true`, imports resolve to an object instead of a path:
+
+```ts
+import photo from '~aphex/some-photos-album/img_1922.jpeg'
+
+console.log(photo)
+// {
+//   format: 'jpeg',           // ImageMimeType from @kitschpatrol/aphex
+//   height: 1080,
+//   src: 'img_1922-a1b2c3d4.jpeg',
+//   width: 1620,
+// }
+```
+
+This is useful for templating, srcset generation, or piping image dimensions into a layout system. The TypeScript ambient module declaration (`@kitschpatrol/unplugin-aphex/client`) types `~aphex/*` imports as `string | AphexImageResultMetadata`, so consumers must narrow the union at the call site.
+
+### Cache directory contents
+
+Alongside the exported images, a `.aphex-plugin-cache.json` file is written into `cacheDirectory`. It tracks which identifiers have been resolved to which files so subsequent runs can skip re-exporting unchanged assets. It's safe to delete (the plugin will rebuild it on the next run) and should not be checked into version control — keep `cacheDirectory` ignored in `.gitignore`.
 
 ## Maintainers
 

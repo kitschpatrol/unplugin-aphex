@@ -60,11 +60,17 @@ export class AphexExport {
 	// In-flight request timing: tracks how long each request takes
 	private readonly startTimesByIdentifier = new Map<string, number>()
 
+	// Whether the host can run the underlying Photos.app export pipeline.
+	// On unsupported platforms the plugin still serves pre-resolved cache entries.
+	private readonly platformSupported: boolean
+
 	private get cacheFilePath(): string {
 		return path.join(this.pluginOptions.cacheDirectory, CACHE_FILE_NAME)
 	}
 
 	constructor(options?: Options) {
+		this.platformSupported = process.platform === 'darwin' && process.arch === 'arm64'
+
 		this.pluginOptions = resolveOptions(options)
 		this.exportLimit = pLimit(this.pluginOptions.maxConcurrentExports)
 
@@ -90,9 +96,19 @@ export class AphexExport {
 
 		// Use the lognow logger for the aphex library
 		setLogger(aphexLogger)
+
+		if (!this.platformSupported) {
+			log.warn(
+				`Running on ${process.platform}/${process.arch}; Photos.app export is unavailable. Only previously-cached entries in "${this.pluginOptions.cacheDirectory}" will resolve.`,
+			)
+		}
 	}
 
 	public async close(): Promise<void> {
+		if (!this.platformSupported) {
+			return
+		}
+
 		if (this.pluginOptions.interactiveSession) {
 			log.debug('Closing session...')
 			await interactiveSessionStop()
@@ -103,9 +119,10 @@ export class AphexExport {
 	}
 
 	public async exportPhoto(identifier: string): Promise<AphexImageResultMetadata | string> {
-		// Only use cache lookup in 'aggressive' mode (fastest, may be outdated)
-		// 'enabled' and 'disabled' modes skip cache lookup to let aphex library validate
-		if (this.pluginOptions.cacheMode === 'aggressive') {
+		// On unsupported platforms we can't talk to Photos.app, so always try
+		// the cache first regardless of mode and refuse on a miss.
+		// Aggressive mode also short-circuits on cache hits for performance.
+		if (!this.platformSupported || this.pluginOptions.cacheMode === 'aggressive') {
 			const cached = this.resolvedCache.get(identifier)
 			if (cached !== undefined) {
 				const cachedPath = typeof cached === 'string' ? cached : cached.src
@@ -123,6 +140,12 @@ export class AphexExport {
 				// Cached file no longer exists, remove stale entry
 				this.resolvedCache.delete(identifier)
 				this.persistentCacheDirty = true
+			}
+
+			if (!this.platformSupported) {
+				throw new Error(
+					`unplugin-aphex: "${identifier}" is not in the cache, and exporting from Photos.app requires macOS on Apple Silicon (got ${process.platform}/${process.arch}). Run a build on a supported host to populate "${this.pluginOptions.cacheDirectory}" first.`,
+				)
 			}
 		}
 
@@ -165,7 +188,7 @@ export class AphexExport {
 	}
 
 	public async initialize(): Promise<void> {
-		if (this.pluginOptions.interactiveSession) {
+		if (this.platformSupported && this.pluginOptions.interactiveSession) {
 			log.debug('Initializing interactive session...')
 			await interactiveSessionStart()
 		}

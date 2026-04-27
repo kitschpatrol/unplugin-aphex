@@ -7,7 +7,6 @@ const VIRTUAL_PREFIX = '\0aphex:'
 
 export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) => {
 	const aphexExport = new AphexExport(options)
-	const metadataById = new Map<string, string>()
 
 	return {
 		async buildEnd() {
@@ -26,13 +25,14 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
 				id: new RegExp(`^${VIRTUAL_PREFIX}`),
 			},
 			handler(id) {
-				const json = metadataById.get(id)
-				if (json === undefined) {
+				const identifier = id.slice(VIRTUAL_PREFIX.length)
+				const result = aphexExport.getCachedResult(identifier)
+				if (result === undefined || typeof result === 'string') {
 					throw new Error(
-						`unplugin-aphex: missing virtual entry for "${id}". This indicates the plugin's resolveId/load state was lost between hooks.`,
+						`unplugin-aphex: missing metadata for "${identifier}". This indicates the plugin's resolveId/load state was lost between hooks.`,
 					)
 				}
-				return `export default ${json}`
+				return `export default ${JSON.stringify(result)}`
 			},
 		},
 		name: 'unplugin-aphex',
@@ -46,9 +46,7 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
 					return aphexExport.resolveFromCache(result)
 				}
 
-				const virtualId = `${VIRTUAL_PREFIX}${id}`
-				metadataById.set(virtualId, JSON.stringify(result))
-				return virtualId
+				return `${VIRTUAL_PREFIX}${id}`
 			},
 		},
 		async writeBundle() {

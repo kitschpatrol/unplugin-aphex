@@ -156,6 +156,10 @@ export class AphexExport {
 		return this.pathsSeen
 	}
 
+	public getCachedResult(identifier: string): AphexImageResultMetadata | string | undefined {
+		return this.resolvedCache.get(identifier)
+	}
+
 	public getAssetFileName(photoPath: string): string {
 		return path.basename(photoPath)
 	}

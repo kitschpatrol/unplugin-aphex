@@ -318,38 +318,56 @@ export class AphexExport {
 	}
 
 	private async loadPersistentCache(): Promise<void> {
+		let cacheContent: string
 		try {
-			const cacheContent = await fs.readFile(this.cacheFilePath, 'utf8')
-			// eslint-disable-next-line ts/no-unsafe-type-assertion
-			const cache = JSON.parse(cacheContent) as PersistentCache
-
-			let validEntries = 0
-			let staleEntries = 0
-
-			for (const [identifier, entry] of Object.entries(cache)) {
-				const cachedPath = typeof entry.result === 'string' ? entry.result : entry.result.src
-
-				// Only load entries whose files actually exist on disk
-				if (await this.fileExists(this.resolveFromCache(cachedPath))) {
-					this.resolvedCache.set(identifier, entry.result)
-					validEntries++
-				} else {
-					// Mark cache as dirty so stale entries are removed on save
-					this.persistentCacheDirty = true
-					staleEntries++
-				}
+			cacheContent = await fs.readFile(this.cacheFilePath, 'utf8')
+		} catch (error) {
+			if (error instanceof Error && 'code' in error && error.code === 'ENOENT') {
+				// First run on this cache directory; nothing to load
+				return
 			}
-
-			if (staleEntries > 0) {
-				log.debug(
-					`Removed ${staleEntries} stale entries from cache (files no longer exist on disk)`,
-				)
-			}
-
-			log.debug(`Registered ${validEntries} entries from persistent cache`)
-		} catch {
-			// Cache file doesn't exist or is invalid, start fresh
+			log.warn(
+				`Failed to read persistent cache at "${this.cacheFilePath}", starting fresh: ${error instanceof Error ? error.message : String(error)}`,
+			)
+			return
 		}
+
+		let cache: PersistentCache
+		try {
+			// eslint-disable-next-line ts/no-unsafe-type-assertion
+			cache = JSON.parse(cacheContent) as PersistentCache
+		} catch (error) {
+			log.warn(
+				`Persistent cache at "${this.cacheFilePath}" is malformed and will be rewritten: ${error instanceof Error ? error.message : String(error)}`,
+			)
+			this.persistentCacheDirty = true
+			return
+		}
+
+		let validEntries = 0
+		let staleEntries = 0
+
+		for (const [identifier, entry] of Object.entries(cache)) {
+			const cachedPath = typeof entry.result === 'string' ? entry.result : entry.result.src
+
+			// Only load entries whose files actually exist on disk
+			if (await this.fileExists(this.resolveFromCache(cachedPath))) {
+				this.resolvedCache.set(identifier, entry.result)
+				validEntries++
+			} else {
+				// Mark cache as dirty so stale entries are removed on save
+				this.persistentCacheDirty = true
+				staleEntries++
+			}
+		}
+
+		if (staleEntries > 0) {
+			log.debug(
+				`Removed ${staleEntries} stale entries from cache (files no longer exist on disk)`,
+			)
+		}
+
+		log.debug(`Registered ${validEntries} entries from persistent cache`)
 	}
 }
 

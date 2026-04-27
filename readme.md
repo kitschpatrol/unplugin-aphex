@@ -37,7 +37,7 @@ Aphex treats your Apple Photos.app library as a virtual file system, allowing yo
 import photo from '~aphex/some-photos-album/img_1922.jpeg'
 
 // In Vite dev mode, photo resolves to something like:
-console.log(photo) // '/@fs/node_modules/.cache/aphex/img_1922-a1b2c3d4.jpeg'
+console.log(photo) // '/node_modules/.cache/aphex/img_1922-a1b2c3d4.jpeg'
 ```
 
 Running against a cold cache can be _extremely_ slow and can require foreground UI focus, because certain image export strategies have to manipulate the Photos.app GUI directly. (This is for [regrettable but valid reasons](https://github.com/RhetTbull/osxphotos/discussions/1522).)

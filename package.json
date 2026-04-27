@@ -71,7 +71,7 @@
 		"test": "vitest run"
 	},
 	"dependencies": {
-		"@kitschpatrol/aphex": "file:../aphex",
+		"@kitschpatrol/aphex": "^0.1.0",
 		"@types/node": "~22.18.13",
 		"defu": "^6.1.7",
 		"lognow": "^0.6.1",
@@ -82,8 +82,8 @@
 	},
 	"devDependencies": {
 		"@farmfe/core": ">=1.7.11",
-		"@kitschpatrol/shared-config": "^7.5.0",
-		"@sxzz/test-utils": "^0.5.16",
+		"@kitschpatrol/shared-config": "^7.5.1",
+		"@sxzz/test-utils": "^0.5.18",
 		"@vitest/browser-playwright": "^4.1.5",
 		"bumpp": "^11.0.1",
 		"esbuild": "*",
@@ -125,7 +125,7 @@
 			"optional": true
 		}
 	},
-	"packageManager": "pnpm@10.33.1",
+	"packageManager": "pnpm@10.33.2",
 	"engines": {
 		"node": ">=22.18.0"
 	},

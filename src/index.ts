@@ -27,9 +27,12 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
 			},
 			handler(id) {
 				const json = metadataById.get(id)
-				if (json !== undefined) {
-					return `export default ${json}`
+				if (json === undefined) {
+					throw new Error(
+						`unplugin-aphex: missing virtual entry for "${id}". This indicates the plugin's resolveId/load state was lost between hooks.`,
+					)
 				}
+				return `export default ${json}`
 			},
 		},
 		name: 'unplugin-aphex',

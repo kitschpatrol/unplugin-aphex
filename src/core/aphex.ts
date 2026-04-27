@@ -75,8 +75,8 @@ export class AphexExport {
 		this.exportLimit = pLimit(this.pluginOptions.maxConcurrentExports)
 
 		this.aphexOptions = mergeDefaultExportOptions({
-			exportOptions: this.pluginOptions.exportOptions ?? undefined,
-			processOptions: this.pluginOptions.processOptions ?? undefined,
+			exportOptions: this.pluginOptions.exportOptions,
+			processOptions: this.pluginOptions.processOptions,
 		})
 
 		// Apply proxied options...

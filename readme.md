@@ -166,6 +166,21 @@ export default {
 
 <br></details>
 
+<details>
+<summary>Nuxt</summary><br>
+
+```ts
+// Your nuxt.config.ts
+export default defineNuxtConfig({
+  modules: ['@kitschpatrol/unplugin-aphex/nuxt'],
+  aphex: {
+    // plugin options here
+  },
+})
+```
+
+<br></details>
+
 #### 3. Configure TypeScript
 
 _Required for TypeScript projects. Skip this step if you're using plain JavaScript._

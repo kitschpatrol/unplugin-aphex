@@ -259,13 +259,22 @@ export class AphexExport {
 		const relativePath = path.relative(this.pluginOptions.cacheDirectory, result.path)
 
 		if (this.pluginOptions.returnMetadata) {
-			return {
-				// TODO fish format out of deeper Aphex results instead? More robust?
+			const processedOutput = result.results.processResult?.output
+			const format = processedOutput?.mime
 				// eslint-disable-next-line ts/no-unsafe-type-assertion
-				format: path.extname(result.path).toLowerCase().slice(1) as ImageMimeType,
-				height: result.photoInfo.edited?.height ?? result.photoInfo.original.height,
+				?? (path.extname(result.path).toLowerCase().slice(1) as ImageMimeType)
+			const height = processedOutput?.dimensionsPixels.height
+				?? result.photoInfo.edited?.height
+				?? result.photoInfo.original.height
+			const width = processedOutput?.dimensionsPixels.width
+				?? result.photoInfo.edited?.width
+				?? result.photoInfo.original.width
+
+			return {
+				format,
+				height,
 				src: relativePath,
-				width: result.photoInfo.edited?.width ?? result.photoInfo.original.width,
+				width,
 			}
 		}
 

@@ -49,9 +49,10 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
 				return `${VIRTUAL_PREFIX}${id}`
 			},
 		},
+		// Production-only: dev's `pathsSeen` is incomplete (depends on which
+		// routes the user actually visits), so pruning there would delete
+		// cache entries for unvisited pages.
 		async writeBundle() {
-			// Only fires on "build", not in dev/middleware modes.
-			// TODO is this a problem for middleware?
 			await aphexExport.pruneCache()
 		},
 	}

@@ -39,8 +39,10 @@ export type Options = {
 	 */
 	processOptions?: PartialDeep<ExportOptions['processOptions']>
 	/**
-	 * Delete all files in `cacheDirectory` that are not in the exported
-	 * image set at the end of a full build.
+	 * Delete all files in `cacheDirectory` that are not in the exported image
+	 * set at the end of a production build. Skipped in dev because the dev
+	 * server only sees imports for routes the user actually visits, so
+	 * pruning there would delete cache entries for unvisited pages.
 	 * @default false
 	 */
 	pruneCacheOnBuild?: boolean

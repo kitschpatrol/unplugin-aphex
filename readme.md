@@ -8,6 +8,7 @@
 
 [![NPM Package @kitschpatrol/unplugin-aphex](https://img.shields.io/npm/v/@kitschpatrol/unplugin-aphex.svg)](https://npmjs.com/package/@kitschpatrol/unplugin-aphex)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![CI](https://github.com/kitschpatrol/unplugin-aphex/actions/workflows/ci.yml/badge.svg)](https://github.com/kitschpatrol/unplugin-aphex/actions/workflows/ci.yml)
 
 <!-- /badges -->
 

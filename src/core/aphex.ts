@@ -104,8 +104,8 @@ export class AphexExport {
 	}
 
 	/**
-	 * Tear down long-lived resources (interactive Photos.app session or
-	 * exiftool subprocess). Safe to call multiple times.
+	 * Tear down long-lived resources (interactive Photos.app session or exiftool
+	 * subprocess). Safe to call multiple times.
 	 */
 	public async close(): Promise<void> {
 		if (!this.platformSupported) {
@@ -191,9 +191,9 @@ export class AphexExport {
 	}
 
 	/**
-	 * Prepare the export pipeline: ensure the cache directory exists and load
-	 * any persisted cache entries from previous runs. Must be awaited before
-	 * the first `exportPhoto` call.
+	 * Prepare the export pipeline: ensure the cache directory exists and load any
+	 * persisted cache entries from previous runs. Must be awaited before the
+	 * first `exportPhoto` call.
 	 */
 	public async initialize(): Promise<void> {
 		if (this.platformSupported && this.pluginOptions.interactiveSession) {
@@ -214,10 +214,10 @@ export class AphexExport {
 	}
 
 	/**
-	 * Delete files in the cache directory that weren't referenced this
-	 * session. No-op unless `pruneCacheOnBuild` is enabled. Should only be
-	 * called when `pathsSeen` is known to be complete (i.e. after a full
-	 * production build, not a dev session).
+	 * Delete files in the cache directory that weren't referenced this session.
+	 * No-op unless `pruneCacheOnBuild` is enabled. Should only be called when
+	 * `pathsSeen` is known to be complete (i.e. after a full production build,
+	 * not a dev session).
 	 */
 	public async pruneCache(): Promise<void> {
 		if (this.pluginOptions.pruneCacheOnBuild) {

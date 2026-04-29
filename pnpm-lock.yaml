@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@kitschpatrol/aphex':
-        specifier: ^0.1.0
-        version: 0.1.0
+        specifier: ^0.1.1
+        version: 0.1.1
       '@types/node':
         specifier: ~22.18.13
         version: 22.18.13
@@ -1250,8 +1250,8 @@ packages:
   '@keyv/serialize@1.1.1':
     resolution: {integrity: sha512-dXn3FZhPv0US+7dtJsIi2R+c7qWYiReoEh5zUntWCf4oSpMNib8FDhSoed6m3QyZdx5hK7iLFkYk3rNxwt8vTA==}
 
-  '@kitschpatrol/aphex@0.1.0':
-    resolution: {integrity: sha512-ta5MPRpdgbCIXkdh74OTxFfQpDAMXeQGmeQd9h3mAJuZF9zkVhwRKbfyOAoFHbBClIorXu+qV05EtsxHndxnCA==}
+  '@kitschpatrol/aphex@0.1.1':
+    resolution: {integrity: sha512-41za/1dkhh//iOmQyuGCt1CAxWAtv6qkkaVHJYylU1XzF7L7FCnu9Fy0XgsNgUXXfqBPW2mr6DuO712josHyog==}
     engines: {node: '>=22.18.0'}
     cpu: [arm64]
     os: [darwin]
@@ -8595,7 +8595,7 @@ snapshots:
 
   '@keyv/serialize@1.1.1': {}
 
-  '@kitschpatrol/aphex@0.1.0':
+  '@kitschpatrol/aphex@0.1.1':
     dependencies:
       '@sindresorhus/is': 8.0.0
       defu: 6.1.7

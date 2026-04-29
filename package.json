@@ -73,7 +73,7 @@
 		"test": "vitest run"
 	},
 	"dependencies": {
-		"@kitschpatrol/aphex": "^0.1.0",
+		"@kitschpatrol/aphex": "^0.1.1",
 		"@types/node": "~22.18.13",
 		"defu": "^6.1.7",
 		"lognow": "^0.6.1",

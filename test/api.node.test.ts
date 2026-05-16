@@ -67,7 +67,7 @@ describe('exportPhoto', () => {
 		expect(typeof result).toBe('string')
 		// eslint-disable-next-line e18e/prefer-static-regex
 		expect(result).toMatch(/^tiny-[\da-f]+\.png$/)
-	}, 15_000)
+	})
 
 	it('returns metadata object when returnMetadata is true', async () => {
 		const aphex = createAphex({

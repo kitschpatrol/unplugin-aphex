@@ -35,6 +35,7 @@ export default defineConfig({
 					exclude: ['test/**/*.browser.test.ts'],
 					include: ['test/**/*.test.ts'],
 					name: 'node',
+					testTimeout: 15_000,
 				},
 			},
 		],

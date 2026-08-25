@@ -17,5 +17,5 @@ export default knipConfig({
 		'webpack',
 	],
 	ignoreExportsUsedInFile: true,
-	ignoreUnresolved: [/^~aphex\//],
+	ignoreUnresolved: [/^~aphex\//v],
 })

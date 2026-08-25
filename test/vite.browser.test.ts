@@ -13,7 +13,7 @@ it('imports dynamic paths with static identifiers', async () => {
 })
 
 // Nope
-it.skip('imports dynamic paths with variable identifiers', async () => {
+it.todo('imports dynamic paths with variable identifiers', async () => {
 	const temp = '~aphex/Tiny/tiny'
 	// eslint-disable-next-line ts/no-unsafe-assignment
 	const photoTestDynamicVariable = await import(/* @vite-ignore */ temp)

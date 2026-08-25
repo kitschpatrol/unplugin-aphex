@@ -41,6 +41,7 @@ export default eslintConfig(
 			'capitalized-comments': 'off',
 			// 'import/no-unresolved': 'off',
 			// 'ts/no-redeclare': 'off',
+			'new-cap': 'off',
 			'ts/triple-slash-reference': 'off',
 		},
 	},

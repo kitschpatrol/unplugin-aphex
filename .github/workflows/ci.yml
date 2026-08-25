@@ -25,28 +25,28 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
       - name: Install pnpm
-        uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5
+        uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
 
       - name: Setup Node.js
-        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 24
-          # Disabled since it breaks puppeteer
-          # cache: 'pnpm'
+          cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Install Playwright browsers
-        run: pnpm exec playwright install --with-deps chromium
+        run: pnpm ci
 
       - name: Build
         run: pnpm run build
+
+      # Tricky in the VM...
+      # - name: Build playground
+      #   run: pnpm -C playground run build
 
       - name: Lint
         run: pnpm run lint
@@ -54,6 +54,3 @@ jobs:
       # Tricky in the VM...
       # - name: Test
       #   run: pnpm run test
-
-      # - name: Build playground
-      #   run: pnpm -C playground run build

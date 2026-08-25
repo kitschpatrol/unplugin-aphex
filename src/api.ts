@@ -1,2 +1,4 @@
-export { AphexExport, type AphexImageResultMetadata } from './core/aphex'
-export { type Options, type ResolvedOptions, resolveOptions } from './core/options'
+export { AphexExport } from './core/aphex'
+export type { AphexImageResultMetadata } from './core/aphex'
+export { resolveOptions } from './core/options'
+export type { Options, ResolvedOptions } from './core/options'

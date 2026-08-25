@@ -28,8 +28,8 @@ type PersistentCacheEntry = {
 type PersistentCache = Record<string, PersistentCacheEntry>
 
 const CACHE_FILE_NAME = '.aphex-plugin-cache.json'
-const IDENTIFIER_REGEX = /^~aphex\/.+/
-const CLEAN_IDENTIFIER_REGEX = /^~aphex\/+/
+const IDENTIFIER_REGEX = /^~aphex\/.+/v
+const CLEAN_IDENTIFIER_REGEX = /^~aphex\/+/v
 
 export class AphexExport {
 	/** Regular expression matching the `~aphex/...` identifier prefix. */
@@ -257,7 +257,7 @@ export class AphexExport {
 		}
 
 		const cache: PersistentCache = {}
-		for (const [identifier, result] of this.resolvedCache.entries()) {
+		for (const [identifier, result] of this.resolvedCache) {
 			cache[identifier] = { result }
 		}
 
@@ -300,9 +300,7 @@ export class AphexExport {
 		if (this.pluginOptions.returnMetadata) {
 			const processedOutput = result.results.processResult?.output
 			const format =
-				processedOutput?.mime ??
-				// eslint-disable-next-line ts/no-unsafe-type-assertion
-				(path.extname(result.path).toLowerCase().slice(1) as ImageMimeType)
+				processedOutput?.mime ?? (path.extname(result.path).toLowerCase().slice(1) as ImageMimeType)
 			const height =
 				processedOutput?.dimensionsPixels.height ??
 				result.photoInfo.edited?.height ??
@@ -350,7 +348,6 @@ export class AphexExport {
 
 		let cache: PersistentCache
 		try {
-			// eslint-disable-next-line ts/no-unsafe-type-assertion
 			cache = JSON.parse(cacheContent) as PersistentCache
 		} catch (error) {
 			log.warn(

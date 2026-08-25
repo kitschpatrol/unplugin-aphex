@@ -69,38 +69,38 @@
 		"fix": "ksc fix",
 		"lint": "ksc lint",
 		"play": "poptab && pnpm -C playground run dev",
-		"release": "bumpp --commit 'Release: %s' && pnpm build && NPM_AUTH_TOKEN=$(op read 'op://Personal/npm/token') pnpm publish",
+		"release": "bumpp --commit 'Release: %s' && pnpm build && pnpm publish --otp $(op item get npm --otp)",
 		"test": "vitest run"
 	},
 	"dependencies": {
-		"@kitschpatrol/aphex": "^0.1.2",
-		"@types/node": "~24.0.15",
+		"@kitschpatrol/aphex": "^0.1.3",
+		"@types/node": "~24.13.3",
 		"defu": "^6.1.7",
-		"lognow": "^0.6.2",
-		"p-limit": "^7.3.0",
-		"type-fest": "^5.6.0",
-		"unplugin": "^3.0.0",
-		"unplugin-utils": "^0.3.1"
+		"lognow": "^0.8.0",
+		"p-limit": "^7.3.1",
+		"type-fest": "^5.8.0",
+		"unplugin": "^3.3.0",
+		"unplugin-utils": "^0.3.2"
 	},
 	"devDependencies": {
 		"@farmfe/core": ">=1.7.11",
-		"@kitschpatrol/shared-config": "^7.6.0",
-		"@nuxt/kit": "^4.4.5",
-		"@nuxt/schema": "^4.4.5",
-		"@rspack/core": "^2.0.3",
+		"@kitschpatrol/shared-config": "^8.6.0",
+		"@nuxt/kit": "^4.5.2",
+		"@nuxt/schema": "^4.5.2",
+		"@rspack/core": "^2.1.10",
 		"@sxzz/test-utils": "^0.5.18",
-		"@vitest/browser-playwright": "^4.1.6",
+		"@vitest/browser-playwright": "^4.1.11",
 		"bumpp": "^11.1.0",
 		"esbuild": "*",
-		"playwright": "^1.60.0",
-		"poptab": "^1.1.1",
-		"rolldown": "^1.0.1",
-		"rollup": "^4.60.4",
-		"tsdown": "^0.22.0",
-		"typescript": "~5.9.3",
-		"vite": "^7.3.3",
-		"vitest": "^4.1.6",
-		"webpack": "^5.106.2"
+		"playwright": "^1.62.1",
+		"poptab": "^1.1.2",
+		"rolldown": "^1.2.5",
+		"rollup": "^4.63.0",
+		"tsdown": "^0.22.14",
+		"typescript": "~6.0.3",
+		"vite": "^7.3.6",
+		"vitest": "^4.1.11",
+		"webpack": "^5.109.2"
 	},
 	"peerDependencies": {
 		"@farmfe/core": ">=1",
@@ -142,9 +142,9 @@
 			"optional": true
 		}
 	},
-	"packageManager": "pnpm@11.1.2",
+	"packageManager": "pnpm@11.22.0",
 	"engines": {
-		"node": ">=24.0.0"
+		"node": ">=24.16.0"
 	},
 	"os": [
 		"darwin"

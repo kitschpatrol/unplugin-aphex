@@ -22,7 +22,7 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
 		enforce: 'pre',
 		load: {
 			filter: {
-				id: new RegExp(`^${VIRTUAL_PREFIX}`),
+				id: new RegExp(`^${VIRTUAL_PREFIX}`, 'v'),
 			},
 			handler(id) {
 				const identifier = id.slice(VIRTUAL_PREFIX.length)

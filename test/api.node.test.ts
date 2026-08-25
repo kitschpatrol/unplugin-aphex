@@ -45,7 +45,7 @@ describe('isIdentifier', () => {
 
 	it('rejects non-string types', () => {
 		expect(aphex.isIdentifier(42)).toBe(false)
-		// eslint-disable-next-line unicorn/no-useless-undefined
+
 		expect(aphex.isIdentifier(undefined)).toBe(false)
 		// eslint-disable-next-line unicorn/no-null
 		expect(aphex.isIdentifier(null)).toBe(false)
@@ -66,7 +66,7 @@ describe('exportPhoto', () => {
 		const result = await aphex.exportPhoto(identifier)
 		expect(typeof result).toBe('string')
 		// eslint-disable-next-line e18e/prefer-static-regex
-		expect(result).toMatch(/^tiny-[\da-f]+\.png$/)
+		expect(result).toMatch(/^tiny-[\da-f]+\.png$/v)
 	})
 
 	it('returns metadata object when returnMetadata is true', async () => {

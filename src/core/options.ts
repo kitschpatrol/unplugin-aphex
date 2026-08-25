@@ -113,7 +113,12 @@ export const DEFAULT_OPTIONS: ResolvedOptions = {
  */
 export function resolveOptions(options?: Options): ResolvedOptions {
 	const resolved = defu(options, DEFAULT_OPTIONS)
-	resolved.cacheDirectory = normalizePath(resolved.cacheDirectory)
-	// eslint-disable-next-line ts/no-unsafe-type-assertion
-	return resolved as ResolvedOptions
+
+	// Defu types optional keys as possibly `null`; convert to `undefined`
+	return {
+		...resolved,
+		cacheDirectory: normalizePath(resolved.cacheDirectory),
+		exportOptions: resolved.exportOptions ?? undefined,
+		processOptions: resolved.processOptions ?? undefined,
+	}
 }

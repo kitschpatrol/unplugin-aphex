@@ -7,15 +7,9 @@ export default eslintConfig(
 				'html/no-inline-styles': 'off',
 			},
 		},
-		js: {
-			overrides: {
-				'new-cap': 'off',
-			},
-		},
 		ts: {
 			overrides: {
-				'import/no-unresolved': ['error', { ignore: ['^~aphex/', 'esbuild'] }],
-				'jsdoc/require-jsdoc': 'off',
+				'import/no-unresolved': ['error', { ignore: ['^~aphex/'] }],
 				'new-cap': 'off',
 			},
 		},
@@ -25,22 +19,12 @@ export default eslintConfig(
 		files: ['playground/package.json'],
 		rules: {
 			'json-package/require-author': 'off',
-			'json-package/require-keywords': 'off',
-			'json-package/require-version': 'off',
-		},
-	},
-	{
-		files: ['ext.d.ts'],
-		rules: {
-			'unicorn/prevent-abbreviations': 'off',
 		},
 	},
 	{
 		files: ['readme.md/*.{js,ts}'],
 		rules: {
 			'capitalized-comments': 'off',
-			// 'import/no-unresolved': 'off',
-			// 'ts/no-redeclare': 'off',
 			'new-cap': 'off',
 			'ts/triple-slash-reference': 'off',
 		},

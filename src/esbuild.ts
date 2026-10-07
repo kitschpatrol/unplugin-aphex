@@ -18,4 +18,6 @@ import { unpluginFactory } from './index'
  *
  * 	build({ plugins: [Plugin()] })
  */
-export default createEsbuildPlugin(unpluginFactory)
+const plugin = /* #__PURE__ */ createEsbuildPlugin(unpluginFactory)
+
+export default plugin

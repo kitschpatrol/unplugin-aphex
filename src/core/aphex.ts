@@ -116,7 +116,13 @@ export class AphexExport {
 			log.debug('Closing session...')
 			await interactiveSessionStop()
 		} else {
-			await endExiftool()
+			// Exiftool-vendored rejects when the subprocess outlives termination;
+			// a teardown failure shouldn't fail the consumer's build
+			try {
+				await endExiftool()
+			} catch (error) {
+				log.warn(`Failed to shut down exiftool: ${String(error)}`)
+			}
 		}
 	}
 
@@ -232,10 +238,12 @@ export class AphexExport {
 					continue
 				}
 
-				if (!fileNamesToKeep.has(destinationFile)) {
-					log.debug(`Cleaning up unused image: ${destinationFile}`)
-					await fs.rm(path.join(this.pluginOptions.cacheDirectory, destinationFile))
+				if (fileNamesToKeep.has(destinationFile)) {
+					continue
 				}
+
+				log.debug(`Cleaning up unused image: ${destinationFile}`)
+				await fs.rm(path.join(this.pluginOptions.cacheDirectory, destinationFile))
 			}
 		} else {
 			log.debug('Skipping cache pruning because pruneCacheOnBuild is disabled')

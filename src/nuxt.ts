@@ -18,7 +18,7 @@ import webpack from './webpack'
  * 		modules: ['@kitschpatrol/unplugin-aphex/nuxt'],
  * 	})
  */
-export default defineNuxtModule<Options>({
+const nuxtModule = /* #__PURE__ */ defineNuxtModule<Options>({
 	meta: {
 		configKey: 'aphex',
 		name: '@kitschpatrol/unplugin-aphex',
@@ -28,3 +28,5 @@ export default defineNuxtModule<Options>({
 		addWebpackPlugin(() => webpack(options))
 	},
 })
+
+export default nuxtModule

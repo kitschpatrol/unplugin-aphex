@@ -18,4 +18,6 @@ import { unpluginFactory } from './index'
  * 		plugins: [Plugin()],
  * 	})
  */
-export default createVitePlugin(unpluginFactory)
+const plugin = /* #__PURE__ */ createVitePlugin(unpluginFactory)
+
+export default plugin

@@ -18,4 +18,6 @@ import { unpluginFactory } from './index'
  * 		plugins: [Plugin()],
  * 	}
  */
-export default createFarmPlugin(unpluginFactory)
+const plugin = /* #__PURE__ */ createFarmPlugin(unpluginFactory)
+
+export default plugin

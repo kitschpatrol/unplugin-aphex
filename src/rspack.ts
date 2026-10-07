@@ -18,4 +18,6 @@ import { unpluginFactory } from './index'
  * 		plugins: [Plugin()],
  * 	}
  */
-export default createRspackPlugin(unpluginFactory)
+const plugin = /* #__PURE__ */ createRspackPlugin(unpluginFactory)
+
+export default plugin

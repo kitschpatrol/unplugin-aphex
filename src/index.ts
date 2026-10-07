@@ -43,11 +43,9 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
 			},
 			async handler(id) {
 				const result = await aphexExport.exportPhoto(id)
-				if (typeof result === 'string') {
-					return aphexExport.resolveFromCache(result)
-				}
-
-				return `${VIRTUAL_PREFIX}${id}`
+				return typeof result === 'string'
+					? aphexExport.resolveFromCache(result)
+					: `${VIRTUAL_PREFIX}${id}`
 			},
 		},
 		// Production-only: dev's `pathsSeen` is incomplete (depends on which

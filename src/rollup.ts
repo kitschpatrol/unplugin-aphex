@@ -18,4 +18,6 @@ import { unpluginFactory } from './index'
  * 		plugins: [Plugin()],
  * 	}
  */
-export default createRollupPlugin(unpluginFactory)
+const plugin = /* #__PURE__ */ createRollupPlugin(unpluginFactory)
+
+export default plugin

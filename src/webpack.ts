@@ -20,4 +20,6 @@ import { unpluginFactory } from './index'
  * 		plugins: [Plugin()],
  * 	}
  */
-export default createWebpackPlugin(unpluginFactory)
+const plugin = /* #__PURE__ */ createWebpackPlugin(unpluginFactory)
+
+export default plugin

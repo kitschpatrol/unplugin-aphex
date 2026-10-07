@@ -47,9 +47,16 @@ This readme only covers the basics of using the build plugin; please see the [Ap
 
 ## Getting started
 
+<!-- dependencies -->
+
 ### Dependencies
 
-Requires macOS with Photos.app installed and [Node 22.18.0](https://nodejs.org/en/download/) or newer. Currently, only an `arm64` (Apple Silicon) build of the requisite native binary is provided by the bundled Aphex library.
+- [Node.js](https://nodejs.org/) 24.16.0 or newer (specifically `^24.16.0 || >=26.3.0`)
+- Supported operating systems: macOS
+
+<!-- /dependencies -->
+
+Photos.app must be installed. Currently, only an `arm64` (Apple Silicon) build of the requisite native binary is provided by the bundled Aphex library.
 
 Various image processing features (format conversion, resizing, compression, perceptual diffing, etc.) rely on external binaries installed via [Homebrew](https://brew.sh). See the [Aphex readme](https://github.com/kitschpatrol/aphex) for which tool powers which feature. The brew line below installs every optional binary the plugin might invoke; install only the ones you need for the formats and operations you actually use.
 

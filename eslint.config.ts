@@ -9,7 +9,6 @@ export default eslintConfig(
 		},
 		ts: {
 			overrides: {
-				'import/no-unresolved': ['error', { ignore: ['^~aphex/'] }],
 				'new-cap': 'off',
 			},
 		},

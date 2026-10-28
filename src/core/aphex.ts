@@ -234,11 +234,7 @@ export class AphexExport {
 
 			for (const destinationFile of destinationFiles) {
 				// Never delete the persistent cache file
-				if (destinationFile === CACHE_FILE_NAME) {
-					continue
-				}
-
-				if (fileNamesToKeep.has(destinationFile)) {
+				if (destinationFile === CACHE_FILE_NAME || fileNamesToKeep.has(destinationFile)) {
 					continue
 				}
 

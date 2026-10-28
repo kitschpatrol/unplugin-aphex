@@ -64,12 +64,11 @@
 	],
 	"scripts": {
 		"build": "tsdown",
-		"clean-deep": "git rm -f pnpm-lock.yaml && git clean -fdX -e !.claude/",
+		"clean-deep": "shx rm -f pnpm-lock.yaml && git clean -fdX",
 		"dev": "tsdown --watch",
-		"fix": "ksc fix",
-		"lint": "ksc lint",
+		"fix": "pnpm build && ksc fix",
+		"lint": "pnpm build && ksc lint",
 		"play": "poptab && pnpm -C playground run dev",
-		"prepare": "skills experimental_sync -y -f",
 		"release": "bumpp --commit 'Release: %s' && pnpm build && pnpm publish --otp $(op item get npm --otp)",
 		"test": "vitest run"
 	},
@@ -85,7 +84,7 @@
 	},
 	"devDependencies": {
 		"@farmfe/core": ">=1.7.11",
-		"@kitschpatrol/shared-config": "^8.13.1",
+		"@kitschpatrol/shared-config": "^8.14.0",
 		"@nuxt/kit": "^4.6.1",
 		"@nuxt/schema": "^4.6.1",
 		"@rspack/core": "^2.2.8",
@@ -96,7 +95,7 @@
 		"poptab": "^1.2.2",
 		"rolldown": "^1.2.13",
 		"rollup": "^4.64.5",
-		"skills": "^1.7.2",
+		"shx": "^0.4.0",
 		"tsdown": "^0.23.1",
 		"typescript": "~6.0.3",
 		"vite": "^8.3.4",
@@ -143,7 +142,7 @@
 			"optional": true
 		}
 	},
-	"packageManager": "pnpm@12.11.2",
+	"packageManager": "pnpm@12.15.0",
 	"engines": {
 		"node": "^24.16.0 || >=26.3.0"
 	},
